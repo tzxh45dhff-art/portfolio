@@ -1,6 +1,3 @@
-import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-
 const techRow1 = ['REACT', 'TYPESCRIPT', 'FASTAPI', 'PYTHON', 'AI/ML', 'NEXT.JS', 'REACT', 'TYPESCRIPT', 'FASTAPI', 'PYTHON', 'AI/ML', 'NEXT.JS']
 const techRow2 = ['NODE.JS', 'MONGODB', 'FIREBASE', 'AZURE', 'TAILWIND', 'CLAUDE API', 'NODE.JS', 'MONGODB', 'FIREBASE', 'AZURE', 'TAILWIND', 'CLAUDE API']
 

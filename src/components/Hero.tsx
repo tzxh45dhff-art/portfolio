@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, MotionValue, useTransform } from 'framer-motion'
 import { Download } from 'lucide-react'
 import { personal } from '../data'
