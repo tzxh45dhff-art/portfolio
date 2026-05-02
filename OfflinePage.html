@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFF LINE — Jais Singh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET + BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --lime: #C8F73E;
+  --ink: #F2EDE4;
+  --ink-mid: rgba(242,237,228,0.6);
+  --ink-soft: rgba(242,237,228,0.35);
+  --bg: #0A0A0A;
+  --surface: #161616;
+  --line: rgba(242,237,228,0.08);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-circ: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html { scroll-behavior: auto; overflow-x: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+  position: relative;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor-dot {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--lime); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.3s var(--ease-expo), height 0.3s var(--ease-expo);
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(200,247,62,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.4s var(--ease-expo), height 0.4s var(--ease-expo);
+}
+#cursor-view {
+  position: fixed; z-index: 10000;
+  background: var(--lime); color: #0A0A0A;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 999px;
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.2s;
+  transform: translate(-50%,-50%) translate(16px,-16px);
+  white-space: nowrap;
+}
+
+/* ── BACKGROUND SYSTEM ── */
+#bg-blob {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+}
+#bg-blob-inner {
+  position: absolute;
+  width: 600px; height: 600px;
+  left: 50%; transform: translateX(-50%);
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: top, background;
+}
+#bg-noise {
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none; opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#bg-scanline {
+  position: fixed; left: 0; right: 0; height: 1px;
+  background: var(--lime); opacity: 0.12;
+  z-index: 2; pointer-events: none;
+  will-change: top;
+}
+
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-progress {
+  position: fixed; right: 0; top: 0;
+  width: 2px; height: 100vh;
+  background: var(--line); z-index: 200;
+  pointer-events: none;
+}
+#scroll-progress-fill {
+  width: 100%; background: var(--lime);
+  transform-origin: top; transform: scaleY(0);
+  will-change: transform;
+}
+
+/* ── SECTION LABEL ── */
+#section-label {
+  position: fixed; bottom: 40px; left: 24px;
+  z-index: 200; pointer-events: none;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 3px; color: var(--ink-soft);
+  text-transform: uppercase;
+  overflow: hidden; height: 14px;
+}
+.label-item {
+  position: absolute; left: 0; bottom: 0;
+  transition: transform 0.4s var(--ease-expo), opacity 0.4s;
+}
+.label-item.exit-up { transform: translateY(-100%); opacity: 0; }
+.label-item.enter-from-below { transform: translateY(100%); opacity: 0; }
+
+/* ── PAGE ENTER CURTAIN ── */
+#curtain {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--lime);
+  transform: translateY(0);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════
+   SECTION 1 — HERO
+══════════════════════════════════ */
+#hero-pin-wrapper {
+  position: relative;
+  height: 250vh;
+  z-index: 10;
+}
+#hero-sticky {
+  position: sticky; top: 0;
+  width: 100%; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+#hero-content {
+  position: relative; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 100%; height: 100%; padding: 0 40px;
+}
+#hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 20vw, 20rem);
+  font-weight: 900; font-style: italic;
+  color: var(--ink); text-align: center;
+  line-height: 0.88; letter-spacing: -0.05em;
+  will-change: transform, opacity, filter;
+  transform: scale(1.6);
+  opacity: 0;
+  filter: blur(20px);
+  letter-spacing: 0.3em;
+}
+#hero-sub {
+  margin-top: 32px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; will-change: opacity;
+}
+#hero-name {
+  font-family: var(--font-body); font-weight: 500;
+  font-size: 20px; color: var(--ink);
+  display: flex; gap: 0; overflow: hidden;
+}
+#hero-role {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--ink-soft); letter-spacing: 1px;
+  display: flex; gap: 0; overflow: hidden;
+}
+#hero-tagline {
+  font-family: var(--font-display); font-style: italic;
+  font-weight: 700; font-size: 32px;
+  color: var(--lime);
+  display: flex; gap: 0; overflow: hidden;
+}
+.char {
+  display: inline-block;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.4s, transform 0.4s var(--ease-expo);
+}
+.char.visible {
+  opacity: 1; transform: translateY(0);
+}
+.char-space { display: inline-block; width: 0.3em; }
+#hero-badges {
+  position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center;
+  opacity: 0; will-change: opacity, transform;
+}
+.badge {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--ink-mid); padding: 8px 18px;
+  border: 1px solid rgba(200,247,62,0.3);
+  border-radius: 999px;
+  transform: translateY(24px); opacity: 0;
+  transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+  cursor: default;
+}
+.badge:hover {
+  border-color: var(--lime); color: var(--lime);
+  box-shadow: 0 0 20px rgba(200,247,62,0.2);
+}
+#hero-bio {
+  position: absolute; bottom: 80px; right: 40px;
+  max-width: 400px; text-align: right;
+  font-family: var(--font-body); font-size: 15px;
+  font-weight: 400; color: var(--ink-mid);
+  line-height: 1.65;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.6s, transform 0.6s var(--ease-expo);
+}
+
+/* ══════════════════════════════════
+   SECTION 2 — HORIZONTAL GALLERY
+══════════════════════════════════ */
+#gallery-pin-wrapper {
+  position: relative;
+  height: 350vh;
+  z-index: 10;
+}
+#gallery-sticky {
+  position: sticky; top: 0;
+  width: 100%; height: 100vh;
+  overflow: hidden;
+  display: flex; align-items: center;
+}
+.gallery-edge-left, .gallery-edge-right {
+  position: absolute; top: 0; bottom: 0; width: 120px;
+  z-index: 3; pointer-events: none;
+}
+.gallery-edge-left { left: 0; background: linear-gradient(to right, #0A0A0A, transparent); }
+.gallery-edge-right { right: 0; background: linear-gradient(to left, #0A0A0A, transparent); }
+#gallery-track {
+  display: flex; align-items: center;
+  gap: 24px; padding: 0 80px;
+  will-change: transform;
+  transform: translateX(0);
+}
+.gallery-card {
+  flex-shrink: 0; position: relative;
+  overflow: hidden; border-radius: 4px;
+  background: var(--surface);
+  cursor: none;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.gallery-card:hover { border-color: var(--lime); }
+.gallery-card img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transform: scale(1); transition: transform 0.5s var(--ease-expo);
+}
+.gallery-card:hover img { transform: scale(1.05); }
+.gallery-card-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-style: italic; font-weight: 900;
+  font-size: 8rem; color: rgba(200,247,62,0.06);
+  user-select: none;
+}
+.gallery-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px 16px 16px;
+  background: linear-gradient(to top, rgba(10,10,10,0.9), transparent);
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease-expo);
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-mid); letter-spacing: 1px;
+}
+.gallery-card:hover .gallery-caption { transform: translateY(0); }
+
+/* ══════════════════════════════════
+   SECTION 3 — PULL QUOTE
+══════════════════════════════════ */
+#quote-section {
+  position: relative; z-index: 10;
+  min-height: 200vh; padding: 0;
+}
+#quote-sticky {
+  position: sticky; top: 0;
+  height: 100vh; display: flex;
+  align-items: center; padding: 0 80px;
+  gap: 80px;
+}
+#quote-left {
+  flex-shrink: 0;
+}
+#quote-left-title {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(5rem, 12vw, 11rem);
+  color: var(--ink); line-height: 0.88;
+}
+#quote-left-and {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: clamp(5rem, 12vw, 11rem);
+  color: var(--lime); line-height: 0.88;
+}
+#quote-right {
+  flex: 1;
+}
+#quote-words {
+  font-family: var(--font-body); font-weight: 400;
+  font-size: clamp(1.4rem, 2.8vw, 2.6rem);
+  line-height: 1.5; color: transparent;
+}
+.word {
+  display: inline-block;
+  color: rgba(242,237,228,0.1);
+  transition: color 0.3s;
+}
+.word.lit { color: rgba(242,237,228,1); }
+#quote-attr {
+  margin-top: 32px;
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 3px; color: var(--lime);
+  text-transform: uppercase;
+  opacity: 0; transition: opacity 0.8s;
+}
+#quote-attr.visible { opacity: 1; }
+
+/* ══════════════════════════════════
+   SECTION 4 — INTEREST BLOCKS
+══════════════════════════════════ */
+#interests-section {
+  position: relative; z-index: 10;
+  padding: 160px 0;
+}
+.section-header {
+  display: flex; align-items: baseline;
+  justify-content: center; gap: 0.15em;
+  margin-bottom: 80px; padding: 0 40px;
+  overflow: hidden; position: relative;
+}
+.section-header-left {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(3rem, 8vw, 7rem);
+  color: var(--ink); line-height: 0.88;
+  transform: translateX(-120px); opacity: 0;
+  transition: transform 1s var(--ease-expo), opacity 1s;
+}
+.section-header-right {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: clamp(3rem, 8vw, 7rem);
+  color: var(--lime); line-height: 0.88;
+  transform: translateX(120px); opacity: 0;
+  transition: transform 1s var(--ease-expo), opacity 1s;
+}
+.section-header.in-view .section-header-left,
+.section-header.in-view .section-header-right {
+  transform: translateX(0); opacity: 1;
+}
+.section-hr {
+  width: 0; height: 1px;
+  background: var(--line);
+  margin: 0 40px 80px;
+  transition: width 1.2s var(--ease-expo);
+}
+.section-hr.in-view { width: calc(100% - 80px); }
+
+/* Block 1: Music */
+.interest-block {
+  padding: 80px 80px;
+  position: relative; overflow: hidden;
+}
+.block-divider {
+  height: 1px; background: var(--line);
+  margin: 0 80px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1s var(--ease-expo);
+}
+.block-divider.in-view { transform: scaleX(1); }
+
+.block-two-col {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.block-two-col.reversed { direction: rtl; }
+.block-two-col.reversed > * { direction: ltr; }
+.block-image-wrap {
+  position: relative; overflow: hidden; border-radius: 4px;
+  background: var(--surface);
+}
+.block-image-wrap img, .block-image-placeholder {
+  width: 100%; aspect-ratio: 4/5;
+  object-fit: cover; display: block;
+}
+.block-image-placeholder {
+  aspect-ratio: 4/5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 6rem; color: rgba(200,247,62,0.1);
+  font-family: var(--font-body);
+  background: var(--surface);
+}
+.block-num {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--lime); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.block-title {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  color: var(--ink); line-height: 0.9;
+  margin-bottom: 20px;
+}
+.block-body {
+  font-family: var(--font-body); font-size: 15px;
+  color: var(--ink-mid); line-height: 1.7;
+  margin-bottom: 12px;
+}
+.block-tag {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-soft); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.block-pill {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--lime); padding: 6px 14px;
+  border: 1px solid rgba(200,247,62,0.3);
+  border-radius: 999px;
+}
+
+/* Waveform */
+#waveform {
+  position: absolute; bottom: 16px; left: 16px;
+  display: flex; align-items: flex-end; gap: 3px;
+  z-index: 2; pointer-events: none;
+}
+.wave-bar {
+  width: 3px; background: rgba(200,247,62,0.6);
+  border-radius: 2px;
+  animation: waveBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes waveBounce {
+  0%   { height: var(--h-from); }
+  100% { height: var(--h-to); }
+}
+
+/* Block 2 large number */
+.block-giant-num {
+  position: absolute; top: 50%; left: -2vw;
+  transform: translateY(-50%);
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: 22vw; line-height: 1;
+  color: rgba(200,247,62,0.03);
+  z-index: 0; pointer-events: none;
+  user-select: none;
+}
+.block-text-content { position: relative; z-index: 1; }
+
+/* Block 3: Books */
+.block-centered { text-align: center; max-width: 700px; margin: 0 auto; }
+.books-visual {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: 6px; margin-bottom: 48px; height: 260px;
+}
+.book-spine {
+  width: 14px; height: 240px;
+  border-left: 1px solid var(--lime);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; transform-origin: bottom;
+  will-change: transform;
+}
+.book-spine:nth-child(1) { background: #1a1a1a; transform: rotate(-5deg); }
+.book-spine:nth-child(2) { background: #161616; transform: rotate(0deg); }
+.book-spine:nth-child(3) { background: #1e1e1e; transform: rotate(4deg); }
+.book-title {
+  font-family: var(--font-mono); font-size: 8px;
+  color: var(--ink-soft); letter-spacing: 1px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.reading-list { list-style: none; text-align: left; display: inline-flex; flex-direction: column; gap: 10px; }
+.reading-item {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--ink-mid); letter-spacing: 1px;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; transform: translateX(-16px);
+  transition: opacity 0.5s, transform 0.5s var(--ease-expo);
+}
+.reading-item.visible { opacity: 1; transform: translateX(0); }
+.reading-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+
+/* Block 4: Design grid */
+.block-design-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.design-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.design-card {
+  aspect-ratio: 4/3;
+  background: var(--surface); border-radius: 4px;
+  overflow: hidden; position: relative;
+  border: 1px solid transparent;
+  transition: border-color 0.3s, transform 0.3s var(--ease-expo);
+  cursor: none;
+  opacity: 0; will-change: transform, opacity;
+}
+.design-card:hover { border-color: var(--lime); transform: scale(1.04) !important; }
+.design-card-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-soft); letter-spacing: 2px;
+}
+.design-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--lime), transparent);
+  mix-blend-mode: color; opacity: 0;
+  transition: opacity 0.3s;
+}
+.design-card:hover .design-card-overlay { opacity: 0.15; }
+
+/* ══════════════════════════════════
+   SECTION 5 — SOCIALS GRID
+══════════════════════════════════ */
+#socials-section {
+  position: relative; z-index: 10;
+  padding: 160px 80px;
+}
+.socials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 12px; margin-bottom: 48px;
+}
+.social-card {
+  background: var(--surface); border-radius: 4px;
+  overflow: hidden; position: relative;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+  cursor: none;
+  will-change: transform;
+}
+.social-card:nth-child(1) { grid-row: span 2; }
+.social-card:nth-child(5) { grid-row: span 2; }
+.social-card-inner {
+  position: relative;
+  min-height: 240px; height: 100%;
+}
+.social-card-placeholder {
+  width: 100%; height: 100%; min-height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 24px;
+  font-weight: 700; color: rgba(200,247,62,0.15);
+}
+.social-card:hover { border-color: var(--lime); }
+.social-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 16px; background: linear-gradient(to top, rgba(10,10,10,0.9), transparent);
+  transform: translateY(100%); transition: transform 0.3s var(--ease-expo);
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--ink-mid); letter-spacing: 1px;
+  display: flex; justify-content: space-between;
+}
+.social-card:hover .social-caption { transform: translateY(0); }
+
+.social-links {
+  display: flex; gap: 40px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s, transform 0.6s var(--ease-expo);
+}
+.social-links.visible { opacity: 1; transform: translateY(0); }
+.social-link {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 2px; color: var(--lime);
+  text-decoration: none; text-transform: uppercase;
+  position: relative;
+}
+.social-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 1px; background: var(--lime);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s var(--ease-expo);
+}
+.social-link:hover::after { transform: scaleX(1); }
+
+/* ══════════════════════════════════
+   SECTION 6 — FOOTER CTA
+══════════════════════════════════ */
+#footer-section {
+  position: relative; z-index: 10;
+  padding: 160px 40px;
+  text-align: center; overflow: hidden;
+}
+#footer-title {
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: clamp(5rem, 14vw, 14rem);
+  line-height: 0.88;
+  display: flex; justify-content: center;
+  align-items: baseline; gap: 0.12em;
+  overflow: hidden; margin-bottom: 32px;
+}
+.footer-word-left {
+  color: var(--ink);
+  transform: translateX(-100px); opacity: 0;
+  transition: transform 0.9s var(--ease-expo), opacity 0.9s;
+  display: inline-block;
+}
+.footer-word-right {
+  color: var(--lime);
+  transform: translateX(100px); opacity: 0;
+  transition: transform 0.9s var(--ease-expo), opacity 0.9s;
+  display: inline-block;
+}
+#footer-section.in-view .footer-word-left,
+#footer-section.in-view .footer-word-right {
+  transform: translateX(0); opacity: 1;
+}
+#footer-sub {
+  font-family: var(--font-body); font-size: 16px;
+  color: var(--ink-mid); margin-bottom: 48px;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.6s 0.4s, transform 0.6s 0.4s var(--ease-expo);
+}
+#footer-section.in-view #footer-sub { opacity: 1; transform: translateY(0); }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--lime); padding: 16px 32px;
+  border: 1px solid var(--lime); border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+  margin-bottom: 32px;
+}
+.cta-btn:hover { background: var(--lime); color: #0A0A0A; }
+.cta-arrow { display: inline-block; transition: transform 0.3s var(--ease-expo); }
+.cta-btn:hover .cta-arrow { transform: translateX(6px); }
+.back-link {
+  display: block; margin-top: 24px;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 2px; color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--ink); }
+
+/* ── Framer-style entrance helpers ── */
+.fm-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo); }
+.fm-up.in-view { opacity: 1; transform: translateY(0); }
+.fm-left { opacity: 0; transform: translateX(-80px) rotate(-2deg); transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo); }
+.fm-left.in-view { opacity: 1; transform: translateX(0) rotate(0deg); }
+.fm-right { opacity: 0; transform: translateX(80px) rotate(2deg); transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo); }
+.fm-right.in-view { opacity: 1; transform: translateX(0) rotate(0deg); }
+
+</style>
+</head>
+<body>
+
+<!-- Custom cursors -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-view">VIEW</div>
+
+<!-- Background system -->
+<div id="bg-blob"><div id="bg-blob-inner"></div></div>
+<div id="bg-noise"></div>
+<div id="bg-scanline"></div>
+
+<!-- Scroll progress -->
+<div id="scroll-progress"><div id="scroll-progress-fill" style="height:100%"></div></div>
+
+<!-- Section label -->
+<div id="section-label">
+  <span class="label-item" id="label-text">01 / HERO</span>
+</div>
+
+<!-- Page enter curtain -->
+<div id="curtain"></div>
+
+<!-- ════════════ HERO ════════════ -->
+<div id="hero-pin-wrapper" data-section="0" data-label="01 / HERO">
+  <div id="hero-sticky">
+    <div id="hero-content">
+      <div id="hero-title">OFFLINE</div>
+      <div id="hero-sub">
+        <div id="hero-name"></div>
+        <div id="hero-role"></div>
+        <div id="hero-tagline"></div>
+      </div>
+      <div id="hero-badges">
+        <div class="badge">MUSIC</div>
+        <div class="badge">CHESS</div>
+        <div class="badge">BOOKS</div>
+        <div class="badge">DESIGN</div>
+        <div class="badge">FINANCE</div>
+        <div class="badge">FILM</div>
+      </div>
+      <div id="hero-bio">Beyond the terminal — music, books, chess, and the quiet hours that make the loud ones worth it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ GALLERY ════════════ -->
+<div id="gallery-pin-wrapper" data-section="1" data-label="02 / GALLERY">
+  <div id="gallery-sticky">
+    <div class="gallery-edge-left"></div>
+    <div class="gallery-edge-right"></div>
+    <div id="gallery-track">
+      <!-- 8 cards: alternating tall/short -->
+      <div class="gallery-card" style="width:340px;height:520px;">
+        <div class="gallery-card-placeholder">01</div>
+        <div class="gallery-caption">Chandigarh · 2024</div>
+      </div>
+      <div class="gallery-card" style="width:300px;height:340px;">
+        <div class="gallery-card-placeholder">02</div>
+        <div class="gallery-caption">Delhi · 2024</div>
+      </div>
+      <div class="gallery-card" style="width:420px;height:520px;">
+        <div class="gallery-card-placeholder">03</div>
+        <div class="gallery-caption">Mumbai · 2023</div>
+      </div>
+      <div class="gallery-card" style="width:300px;height:340px;">
+        <div class="gallery-card-placeholder">04</div>
+        <div class="gallery-caption">Manali · 2024</div>
+      </div>
+      <div class="gallery-card" style="width:360px;height:520px;">
+        <div class="gallery-card-placeholder">05</div>
+        <div class="gallery-caption">Amritsar · 2023</div>
+      </div>
+      <div class="gallery-card" style="width:320px;height:340px;">
+        <div class="gallery-card-placeholder">06</div>
+        <div class="gallery-caption">Shimla · 2024</div>
+      </div>
+      <div class="gallery-card" style="width:400px;height:520px;">
+        <div class="gallery-card-placeholder">07</div>
+        <div class="gallery-caption">Jalandhar · 2025</div>
+      </div>
+      <div class="gallery-card" style="width:340px;height:340px;">
+        <div class="gallery-card-placeholder">08</div>
+        <div class="gallery-caption">Online · 2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PULL QUOTE ════════════ -->
+<div id="quote-section" data-section="2" data-label="03 / QUOTE">
+  <div id="quote-sticky">
+    <div id="quote-left">
+      <div id="quote-left-title">Interests</div>
+      <div id="quote-left-and">&amp;</div>
+    </div>
+    <div id="quote-right">
+      <div id="quote-words"></div>
+      <div id="quote-attr">— Jais Singh · 2025</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ INTEREST BLOCKS ════════════ -->
+<div id="interests-section" data-section="3" data-label="04 / INTERESTS">
+
+  <div class="section-header" id="interests-header">
+    <span class="section-header-left">Personal</span>
+    <span class="section-header-right">Interests</span>
+  </div>
+  <div class="section-hr" id="interests-hr"></div>
+
+  <!-- BLOCK 1: MUSIC -->
+  <div class="interest-block">
+    <div class="block-two-col">
+      <div class="block-image-wrap fm-left">
+        <div class="block-image-placeholder">♪</div>
+        <div id="waveform"></div>
+      </div>
+      <div class="fm-up" style="transition-delay:0.1s">
+        <div class="block-num">01</div>
+        <div class="block-title">Between the Headphones</div>
+        <div class="block-body">Frank Ocean. Tyler. Kendrick. Music as architecture.</div>
+        <div class="block-tag">Always · Late Night</div>
+        <div class="block-pill">LISTENING</div>
+      </div>
+    </div>
+  </div>
+  <div class="block-divider" id="div1"></div>
+
+  <!-- BLOCK 2: CHESS -->
+  <div class="interest-block" style="position:relative;overflow:hidden;">
+    <div class="block-giant-num">02</div>
+    <div class="block-two-col reversed">
+      <div class="block-image-wrap fm-right" style="position:relative;">
+        <div class="block-image-placeholder">♟</div>
+      </div>
+      <div class="block-text-content fm-up" style="transition-delay:0.1s">
+        <div class="block-num">02</div>
+        <div class="block-title">Thinking Ahead</div>
+        <div class="block-body">Chess as strategy. Every move is a system.</div>
+        <div class="block-tag">Jalandhar · 2024</div>
+        <div class="block-pill">STRATEGY</div>
+      </div>
+    </div>
+  </div>
+  <div class="block-divider" id="div2"></div>
+
+  <!-- BLOCK 3: BOOKS -->
+  <div class="interest-block">
+    <div class="block-centered fm-up">
+      <div class="books-visual" id="books-visual">
+        <div class="book-spine" id="spine1"><span class="book-title">Psychology of Money</span></div>
+        <div class="book-spine" id="spine2"><span class="book-title">Show Your Work</span></div>
+        <div class="book-spine" id="spine3"><span class="book-title">Zero to One</span></div>
+      </div>
+      <div class="block-num">03</div>
+      <div class="block-title" style="font-size:clamp(2rem,4vw,4rem)"><em>The Reading Stack</em></div>
+      <div class="block-body">Books that rewire how you see money, systems, and people.</div>
+      <ul class="reading-list" style="margin-top:24px;" id="reading-list">
+        <li class="reading-item">The Psychology of Money</li>
+        <li class="reading-item">Show Your Work</li>
+        <li class="reading-item">Zero to One</li>
+      </ul>
+    </div>
+  </div>
+  <div class="block-divider" id="div3"></div>
+
+  <!-- BLOCK 4: DESIGN + FILM -->
+  <div class="interest-block">
+    <div class="block-design-layout">
+      <div class="fm-up">
+        <div class="block-num">04</div>
+        <div class="block-title">Visual Thinking</div>
+        <div class="block-body">Design as language. The aesthetic of a thing matters as much as its function.</div>
+        <div class="block-pill" style="margin-top:16px;">DESIGN + FILM</div>
+      </div>
+      <div class="design-grid" id="design-grid">
+        <div class="design-card" id="dc1"><div class="design-card-placeholder">FRAME 01</div><div class="design-card-overlay"></div></div>
+        <div class="design-card" id="dc2"><div class="design-card-placeholder">FRAME 02</div><div class="design-card-overlay"></div></div>
+        <div class="design-card" id="dc3"><div class="design-card-placeholder">FRAME 03</div><div class="design-card-overlay"></div></div>
+        <div class="design-card" id="dc4"><div class="design-card-placeholder">FRAME 04</div><div class="design-card-overlay"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SOCIALS ════════════ -->
+<div id="socials-section" data-section="4" data-label="05 / SOCIALS">
+  <div class="section-header" id="socials-header">
+    <span class="section-header-left">What's up</span>
+    <span class="section-header-right">On Socials</span>
+  </div>
+  <div class="section-hr" id="socials-hr"></div>
+
+  <div class="socials-grid" id="socials-grid">
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">IG</div><div class="social-caption"><span>Instagram</span><span>↗</span></div></div></div>
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">GH</div><div class="social-caption"><span>GitHub</span><span>↗</span></div></div></div>
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">LI</div><div class="social-caption"><span>LinkedIn</span><span>↗</span></div></div></div>
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">TW</div><div class="social-caption"><span>Twitter</span><span>↗</span></div></div></div>
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">YT</div><div class="social-caption"><span>YouTube</span><span>↗</span></div></div></div>
+    <div class="social-card"><div class="social-card-inner"><div class="social-card-placeholder">BE</div><div class="social-caption"><span>Behance</span><span>↗</span></div></div></div>
+  </div>
+  <div class="social-links" id="social-links">
+    <a href="https://github.com" class="social-link">GitHub ↗</a>
+    <a href="https://linkedin.com" class="social-link">LinkedIn ↗</a>
+    <a href="https://twitter.com" class="social-link">Twitter ↗</a>
+  </div>
+</div>
+
+<!-- ════════════ FOOTER CTA ════════════ -->
+<div id="footer-section" data-section="5" data-label="06 / CTA">
+  <div id="footer-title">
+    <span class="footer-word-left">See the</span>
+    <span class="footer-word-right">Work.</span>
+  </div>
+  <div id="footer-sub">The ONline side has everything I've built.</div>
+  <div>
+    <a href="/online" class="cta-btn">GO TO ONLINE <span class="cta-arrow">→</span></a>
+  </div>
+  <a href="/" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// CURTAIN ENTER ANIMATION
+// ══════════════════════════════════════
+const curtain = document.getElementById('curtain');
+curtain.style.transition = 'transform 0.8s cubic-bezier(0.76,0,0.24,1)';
+setTimeout(() => {
+  curtain.style.transform = 'translateY(-100%)';
+  setTimeout(() => { curtain.style.display = 'none'; }, 900);
+}, 80);
+
+// ══════════════════════════════════════
+// CURSOR
+// ══════════════════════════════════════
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+const viewLabel = document.getElementById('cursor-view');
+let mx = 0, my = 0, rx = 0, ry = 0;
+let isOnImage = false;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  viewLabel.style.left = mx + 'px'; viewLabel.style.top = my + 'px';
+});
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+// Image hover cursor
+document.querySelectorAll('.gallery-card, .social-card, .design-card, .block-image-wrap').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    viewLabel.style.opacity = '1';
+    dot.style.opacity = '0';
+    ring.style.width = '0px'; ring.style.height = '0px';
+  });
+  el.addEventListener('mouseleave', () => {
+    viewLabel.style.opacity = '0';
+    dot.style.opacity = '1';
+    ring.style.width = '36px'; ring.style.height = '36px';
+  });
+});
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { dot.style.width = '16px'; dot.style.height = '16px'; ring.style.width = '56px'; ring.style.height = '56px'; });
+  el.addEventListener('mouseleave', () => { dot.style.width = '8px'; dot.style.height = '8px'; ring.style.width = '36px'; ring.style.height = '36px'; });
+});
+
+// ══════════════════════════════════════
+// WAVEFORM ANIMATION
+// ══════════════════════════════════════
+const waveform = document.getElementById('waveform');
+const barHeights = [14,28,20,36,16,44,22,34,18,40,26,32,12,38,24,30,16,42,20,28];
+barHeights.forEach((h, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'wave-bar';
+  const from = Math.max(6, h * 0.4);
+  const to = h;
+  bar.style.cssText = `--h-from:${from}px;--h-to:${to}px;height:${from}px;animation-delay:${i * 0.06}s;animation-duration:${0.6 + Math.random() * 0.6}s;`;
+  waveform.appendChild(bar);
+});
+
+// ══════════════════════════════════════
+// SPLIT TEXT HELPERS
+// ══════════════════════════════════════
+function splitIntoChars(text, container) {
+  container.innerHTML = '';
+  [...text].forEach(ch => {
+    const span = document.createElement('span');
+    if (ch === ' ') { span.className = 'char-space'; span.innerHTML = ' '; }
+    else { span.className = 'char'; span.textContent = ch; }
+    container.appendChild(span);
+  });
+}
+splitIntoChars('Jais Singh', document.getElementById('hero-name'));
+splitIntoChars('Year 1 · CSE AI', document.getElementById('hero-role'));
+splitIntoChars('building with intent', document.getElementById('hero-tagline'));
+
+// ══════════════════════════════════════
+// QUOTE WORD SPLIT
+// ══════════════════════════════════════
+const quoteText = "Start small. Ship daily. The hours you put in when no one's watching are the ones that define where you end up.";
+const quoteWords = quoteText.split(' ');
+const quoteContainer = document.getElementById('quote-words');
+quoteWords.forEach(w => {
+  const span = document.createElement('span');
+  span.className = 'word';
+  span.textContent = w + ' ';
+  quoteContainer.appendChild(span);
+});
+const wordSpans = quoteContainer.querySelectorAll('.word');
+
+// ══════════════════════════════════════
+// BACKGROUND BLOB
+// ══════════════════════════════════════
+const blob = document.getElementById('bg-blob-inner');
+function updateBlob(progress) {
+  const top = progress * 120;
+  blob.style.top = top + 'vh';
+  let color;
+  if (progress < 0.4) {
+    const t = progress / 0.4;
+    const r = Math.round(200 * (1-t) + 62 * t);
+    const g = Math.round(247 * (1-t) + 130 * t);
+    const b = Math.round(62 * (1-t) + 247 * t);
+    const a = 0.07 - 0.02 * t;
+    color = `rgba(${r},${g},${b},${a})`;
+  } else {
+    const t = (progress - 0.4) / 0.6;
+    const r = Math.round(62 * (1-t) + 180 * t);
+    const g = Math.round(130 * (1-t) + 62 * t);
+    const b = Math.round(247 * (1-t) + 247 * t);
+    const a = 0.05 - 0.01 * t;
+    color = `rgba(${r},${g},${b},${a})`;
+  }
+  blob.style.background = color;
+}
+
+// ══════════════════════════════════════
+// HERO SCROLL ANIMATION
+// ══════════════════════════════════════
+const heroWrapper = document.getElementById('hero-pin-wrapper');
+const heroTitle = document.getElementById('hero-title');
+const heroSub = document.getElementById('hero-sub');
+const heroBadges = document.getElementById('hero-badges');
+const heroBio = document.getElementById('hero-bio');
+const badges = document.querySelectorAll('.badge');
+
+function lerp(a, b, t) { return a + (b-a) * t; }
+function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+function easeOut(t) { return 1 - Math.pow(1-t,3); }
+function norm(v, lo, hi) { return clamp((v - lo) / (hi - lo), 0, 1); }
+
+let heroAnimated = { phase2: false, phase3: false };
+
+function updateHero(scrollY) {
+  const heroTop = heroWrapper.offsetTop;
+  const heroH = heroWrapper.offsetHeight - window.innerHeight;
+  const p = clamp((scrollY - heroTop) / heroH, 0, 1);
+
+  // Phase 1: title reveal (0–30%)
+  const p1 = easeOut(norm(p, 0, 0.3));
+  const scale = lerp(1.6, 1, p1);
+  const blur = lerp(20, 0, p1);
+  const lsem = lerp(0.3, -0.05, p1);
+  heroTitle.style.transform = `scale(${scale})`;
+  heroTitle.style.filter = `blur(${blur}px)`;
+  heroTitle.style.opacity = p1;
+  heroTitle.style.letterSpacing = lsem + 'em';
+
+  // Phase 2: sub text (30–60%)
+  const p2 = norm(p, 0.3, 0.6);
+  heroSub.style.opacity = easeOut(p2);
+  if (p2 > 0 && !heroAnimated.phase2) {
+    heroAnimated.phase2 = true;
+    // Stagger chars
+    document.querySelectorAll('#hero-name .char, #hero-role .char, #hero-tagline .char').forEach((ch, i) => {
+      setTimeout(() => ch.classList.add('visible'), i * 20);
+    });
+  }
+
+  // Phase 3: badges + bio (60–100%)
+  const p3 = norm(p, 0.6, 1.0);
+  if (p3 > 0 && !heroAnimated.phase3) {
+    heroAnimated.phase3 = true;
+    badges.forEach((b, i) => {
+      setTimeout(() => {
+        b.style.opacity = '1';
+        b.style.transform = 'translateY(0)';
+        b.style.transition = 'opacity 0.5s var(--ease-expo), transform 0.5s var(--ease-expo), border-color 0.3s, color 0.3s, box-shadow 0.3s';
+      }, i * 60 + 50);
+    });
+    setTimeout(() => {
+      heroBio.style.opacity = '1';
+      heroBio.style.transform = 'translateY(0)';
+    }, 300);
+  }
+  if (p3 > 0) heroBadges.style.opacity = Math.min(p3 * 3, 1);
+}
+
+// ══════════════════════════════════════
+// GALLERY SCROLL
+// ══════════════════════════════════════
+const galleryWrapper = document.getElementById('gallery-pin-wrapper');
+const galleryTrack = document.getElementById('gallery-track');
+const galleryCards = document.querySelectorAll('.gallery-card');
+
+function updateGallery(scrollY) {
+  const gTop = galleryWrapper.offsetTop;
+  const gH = galleryWrapper.offsetHeight - window.innerHeight;
+  const p = clamp((scrollY - gTop) / gH, 0, 1);
+
+  const trackWidth = galleryTrack.scrollWidth;
+  const viewWidth = window.innerWidth;
+  const maxTranslate = -(trackWidth - viewWidth + 160);
+  galleryTrack.style.transform = `translateX(${p * maxTranslate}px)`;
+
+  // Per-card entrance
+  galleryCards.forEach((card, i) => {
+    const cardP = clamp((p - i * 0.07) / 0.2, 0, 1);
+    const e = easeOut(cardP);
+    const s = lerp(0.88, 1, e);
+    const bright = lerp(0.4, 1, e);
+    const rotY = lerp(8, 0, e);
+    card.style.transform = `scale(${s}) rotateY(${rotY}deg)`;
+    card.style.filter = `brightness(${bright})`;
+  });
+}
+
+// ══════════════════════════════════════
+// QUOTE SCROLL
+// ══════════════════════════════════════
+const quoteSection = document.getElementById('quote-section');
+const quoteAttr = document.getElementById('quote-attr');
+
+function updateQuote(scrollY) {
+  const qTop = quoteSection.offsetTop;
+  const qH = quoteSection.offsetHeight - window.innerHeight;
+  const p = clamp((scrollY - qTop) / Math.max(qH, 1), 0, 1);
+
+  const total = wordSpans.length;
+  wordSpans.forEach((w, i) => {
+    const threshold = i / total;
+    if (p >= threshold) w.classList.add('lit');
+    else w.classList.remove('lit');
+  });
+  if (p >= 0.92) quoteAttr.classList.add('visible');
+  else quoteAttr.classList.remove('visible');
+}
+
+// ══════════════════════════════════════
+// SECTION LABEL
+// ══════════════════════════════════════
+const sections = document.querySelectorAll('[data-section]');
+const labelEl = document.getElementById('label-text');
+let currentSection = -1;
+
+function updateSectionLabel(scrollY) {
+  let active = 0;
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top + scrollY;
+    if (scrollY >= top - window.innerHeight * 0.5) {
+      active = parseInt(sec.dataset.section);
+    }
+  });
+  if (active !== currentSection) {
+    currentSection = active;
+    const sec = document.querySelector(`[data-section="${active}"]`);
+    if (sec) {
+      // Animate out old
+      labelEl.style.transform = 'translateY(-100%)';
+      labelEl.style.opacity = '0';
+      setTimeout(() => {
+        labelEl.textContent = sec.dataset.label;
+        labelEl.style.transition = 'none';
+        labelEl.style.transform = 'translateY(100%)';
+        labelEl.style.opacity = '0';
+        setTimeout(() => {
+          labelEl.style.transition = 'transform 0.4s var(--ease-expo), opacity 0.4s';
+          labelEl.style.transform = 'translateY(0)';
+          labelEl.style.opacity = '1';
+        }, 20);
+      }, 250);
+    }
+  }
+}
+
+// ══════════════════════════════════════
+// INTERSECTION OBSERVER for simple entrances
+// ══════════════════════════════════════
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      // Reading list stagger
+      if (e.target.id === 'interests-section' || e.target.closest('#interests-section')) {
+        const items = document.querySelectorAll('.reading-item');
+        items.forEach((item, i) => {
+          setTimeout(() => item.classList.add('visible'), i * 120 + 200);
+        });
+      }
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-60px' });
+
+document.querySelectorAll('.fm-up, .fm-left, .fm-right, .section-header, .section-hr, .block-divider, #footer-section').forEach(el => io.observe(el));
+
+// Design grid enter
+const dcIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const deltas = [[-60,-60],[60,-60],[-60,60],[60,60]];
+      document.querySelectorAll('.design-card').forEach((card, i) => {
+        setTimeout(() => {
+          card.style.transition = `opacity 0.6s var(--ease-expo), transform 0.6s var(--ease-expo)`;
+          card.style.opacity = '1';
+          card.style.transform = 'translate(0,0)';
+        }, i * 100);
+      });
+    }
+  });
+}, { threshold: 0.2 });
+
+const designGrid = document.getElementById('design-grid');
+if (designGrid) {
+  // Set initial positions
+  const deltas = [[-60,-60],[60,-60],[-60,60],[60,60]];
+  document.querySelectorAll('.design-card').forEach((card, i) => {
+    card.style.transform = `translate(${deltas[i][0]}px,${deltas[i][1]}px)`;
+    card.style.opacity = '0';
+  });
+  dcIO.observe(designGrid);
+}
+
+// ══════════════════════════════════════
+// MAGNETIC SOCIAL CARDS
+// ══════════════════════════════════════
+document.querySelectorAll('.social-card').forEach(card => {
+  let vx = 0, vy = 0, tx = 0, ty = 0;
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    tx = (e.clientX - cx) * 0.18;
+    ty = (e.clientY - cy) * 0.18;
+  });
+  card.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
+  (function spring() {
+    vx += (tx - vx) * 0.15;
+    vy += (ty - vy) * 0.15;
+    card.style.transform = `translate(${vx}px,${vy}px) scale(${Math.abs(vx)+Math.abs(vy) > 1 ? 1.03 : 1})`;
+    requestAnimationFrame(spring);
+  })();
+});
+
+// Social links IO
+const socialLinksEl = document.getElementById('social-links');
+const slIO = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) socialLinksEl.classList.add('visible'); });
+}, { threshold: 0.5 });
+slIO.observe(socialLinksEl);
+
+// ══════════════════════════════════════
+// BOOKS VISUAL (reading list IO)
+// ══════════════════════════════════════
+const readingIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const items = document.querySelectorAll('.reading-item');
+      items.forEach((item, i) => {
+        setTimeout(() => item.classList.add('visible'), i * 120 + 200);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+const readingList = document.getElementById('reading-list');
+if (readingList) readingIO.observe(readingList);
+
+// Books fan-out IO
+const booksIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('spine1').style.cssText += ';transition:transform 0.8s var(--ease-expo);transform:rotate(-18deg) translateX(-20px);';
+      document.getElementById('spine2').style.cssText += ';transition:transform 0.8s 0.1s var(--ease-expo);transform:rotate(0deg);';
+      document.getElementById('spine3').style.cssText += ';transition:transform 0.8s 0.2s var(--ease-expo);transform:rotate(18deg) translateX(20px);';
+    }
+  });
+}, { threshold: 0.4 });
+const booksVisual = document.getElementById('books-visual');
+if (booksVisual) booksIO.observe(booksVisual);
+
+// ══════════════════════════════════════
+// MAIN SCROLL HANDLER
+// ══════════════════════════════════════
+const scanline = document.getElementById('bg-scanline');
+const progressFill = document.getElementById('scroll-progress-fill');
+
+function onScroll() {
+  const scrollY = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const progress = scrollY / maxScroll;
+
+  // Scroll progress bar
+  progressFill.style.transform = `scaleY(${progress})`;
+
+  // Scanline
+  scanline.style.top = (scrollY % window.innerHeight) + 'px';
+
+  // Blob
+  updateBlob(progress);
+
+  // Section label
+  updateSectionLabel(scrollY);
+
+  // Hero
+  updateHero(scrollY);
+
+  // Gallery
+  updateGallery(scrollY);
+
+  // Quote
+  updateQuote(scrollY);
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => { onScroll(); });
+onScroll();
+
+// ══════════════════════════════════════
+// TWEAKS PANEL
+// ══════════════════════════════════════
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#C8F73E",
+  "heroTitle": "OFFLINE",
+  "bgColor": "#0A0A0A",
+  "darkMode": true,
+  "fontDisplay": "Barlow Condensed",
+  "showBio": true
+}/*EDITMODE-END*/;
+
+let tweaks = { ...TWEAK_DEFAULTS };
+
+// Tweaks panel DOM
+const tweakPanel = document.createElement('div');
+tweakPanel.id = 'tweaks-panel';
+tweakPanel.style.cssText = `
+  position: fixed; bottom: 24px; right: 24px; z-index: 8000;
+  background: rgba(10,10,10,0.95); border: 1px solid rgba(200,247,62,0.2);
+  border-radius: 8px; padding: 20px; width: 260px;
+  font-family: 'Space Mono', monospace; font-size: 11px; color: #F2EDE4;
+  display: none; backdrop-filter: blur(12px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.8);
+`;
+tweakPanel.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <span style="font-size:11px;letter-spacing:2px;color:#C8F73E;text-transform:uppercase">Tweaks</span>
+    <button id="tw-close" style="background:none;border:none;color:#F2EDE4;cursor:pointer;font-size:16px;opacity:0.6">✕</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <label style="display:flex;flex-direction:column;gap:6px;opacity:0.8;font-size:10px;letter-spacing:1px;text-transform:uppercase">
+      Accent Color
+      <input type="color" id="tw-accent" value="${tweaks.accentColor}" style="width:100%;height:28px;border:1px solid rgba(200,247,62,0.2);background:none;border-radius:4px;cursor:pointer">
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;opacity:0.8;font-size:10px;letter-spacing:1px;text-transform:uppercase">
+      Hero Title Text
+      <input type="text" id="tw-hero" value="${tweaks.heroTitle}" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#F2EDE4;padding:6px 8px;font-family:inherit;font-size:11px;border-radius:4px;outline:none">
+    </label>
+    <label style="display:flex;align-items:center;gap:10px;opacity:0.8;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">
+      <input type="checkbox" id="tw-bio" ${tweaks.showBio ? 'checked' : ''} style="accent-color:#C8F73E">
+      Show Bio
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;opacity:0.8;font-size:10px;letter-spacing:1px;text-transform:uppercase">
+      Background
+      <input type="color" id="tw-bg" value="${tweaks.bgColor}" style="width:100%;height:28px;border:1px solid rgba(200,247,62,0.2);background:none;border-radius:4px;cursor:pointer">
+    </label>
+  </div>
+`;
+document.body.appendChild(tweakPanel);
+
+document.getElementById('tw-close').addEventListener('click', () => {
+  tweakPanel.style.display = 'none';
+  window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+});
+document.getElementById('tw-accent').addEventListener('input', e => {
+  const v = e.target.value;
+  document.documentElement.style.setProperty('--lime', v);
+  tweaks.accentColor = v;
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: v } }, '*');
+});
+document.getElementById('tw-hero').addEventListener('input', e => {
+  const v = e.target.value;
+  heroTitle.textContent = v;
+  tweaks.heroTitle = v;
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { heroTitle: v } }, '*');
+});
+document.getElementById('tw-bio').addEventListener('change', e => {
+  heroBio.style.display = e.target.checked ? 'block' : 'none';
+  tweaks.showBio = e.target.checked;
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { showBio: e.target.checked } }, '*');
+});
+document.getElementById('tw-bg').addEventListener('input', e => {
+  const v = e.target.value;
+  document.documentElement.style.setProperty('--bg', v);
+  document.body.style.background = v;
+  tweaks.bgColor = v;
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bgColor: v } }, '*');
+});
+
+// Register tweaks protocol
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') tweakPanel.style.display = 'block';
+  if (e.data?.type === '__deactivate_edit_mode') tweakPanel.style.display = 'none';
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+</script>
+</body>
+</html>
