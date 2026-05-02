@@ -1,0 +1,44 @@
+/* ── Signature overlay ─────────────────────────── */
+.signature-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.signature-svg {
+  width: clamp(320px, 42vw, 560px);
+  height: auto;
+  filter: drop-shadow(0 0 18px rgba(200,247,62,0.25));
+}
+
+/* Label top-center */
+.tech-label {
+  position: absolute;
+  top: clamp(16px, 2.5vw, 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 5;
+}
+.tech-label span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.35);
+}
+.tech-label strong {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  color: var(--lime);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}

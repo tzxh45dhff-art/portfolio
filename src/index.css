@@ -1,0 +1,12 @@
+/* ── Modular CSS Imports ───────────────────────── */
+@import './styles/base.css';
+@import './styles/preloader.css';
+@import './styles/hero.css';
+@import './styles/scene.css';
+@import './styles/signature.css';
+@import './styles/about.css';
+@import './styles/gallery.css';
+@import './styles/sections.css';
+@import './styles/onoffline.css';
+@import './styles/footer.css';
+@import './styles/offline.css';

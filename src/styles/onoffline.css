@@ -1,0 +1,269 @@
+/* ── ON LINE / OFF LINE Section ────────────────── */
+.ool-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* ── Topographic SVG background ────────────────── */
+.ool-topo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.ool-topo path {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.06);
+  stroke-width: 1.2;
+}
+
+/* ── Section header ────────────────────────────── */
+.ool-header {
+  position: absolute;
+  top: clamp(24px, 3vw, 40px);
+  left: clamp(24px, 4vw, 64px);
+  right: clamp(24px, 4vw, 64px);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ool-header-index {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--lime);
+}
+
+.ool-header-title {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.45);
+}
+
+.ool-header-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(242, 237, 228, 0.12);
+}
+
+.ool-header-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.25);
+}
+
+/* ── Center typography ─────────────────────────── */
+.ool-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 80px;
+}
+
+.ool-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.ool-title-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ool-prefix {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  margin-bottom: -0.45em;
+  margin-left: 0.1em;
+  position: relative;
+  z-index: 2;
+}
+
+.ool-prefix-lime {
+  color: var(--lime);
+}
+.ool-prefix-dark {
+  color: #0A0A0A;
+}
+
+.ool-big {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 11vw, 9.5rem);
+  color: inherit;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+.ool-desc {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.6;
+}
+
+.ool-arrow-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--lime);
+  border-radius: 10px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.ool-arrow-btn svg {
+  transition: transform 0.25s ease;
+}
+.ool-arrow-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 4px 24px rgba(200, 247, 62, 0.35);
+}
+.ool-arrow-btn:hover svg {
+  transform: rotate(5deg);
+}
+
+/* ── Side image panel wrappers (handle centering) ── */
+.ool-panel-wrap {
+  position: absolute;
+  top: 0;
+  width: 44vw;
+  height: 100%;
+  z-index: 2;
+}
+.ool-panel-wrap-left { left: -4vw; }
+.ool-panel-wrap-right { right: -4vw; }
+
+/* ── Side image panels (visuals only, no positioning) */
+.ool-panel {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow:
+    0 0 80px rgba(200, 247, 62, 0.15),
+    0 0 200px rgba(200, 247, 62, 0.06);
+  transition: box-shadow 0.5s ease;
+}
+.ool-panel:hover {
+  box-shadow:
+    0 0 120px rgba(200, 247, 62, 0.28),
+    0 0 240px rgba(200, 247, 62, 0.10);
+}
+
+.ool-panel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Placeholder (when no image) ───────────────── */
+.ool-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: inset 0 0 60px rgba(200, 247, 62, 0.08);
+}
+.ool-cursor-blink {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--lime);
+  animation: cursorBlink 1s step-end infinite;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.ool-placeholder-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.4);
+}
+
+/* ── Glow overlays ─────────────────────────────── */
+.ool-glow,
+.ool-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ool-glow-left {
+  background: radial-gradient(ellipse at 70% 50%, rgba(200, 247, 62, 0.25) 0%, transparent 65%);
+  mix-blend-mode: screen;
+}
+.ool-glow-right {
+  background: radial-gradient(ellipse at 30% 50%, rgba(200, 247, 62, 0.2) 0%, transparent 65%);
+  mix-blend-mode: screen;
+}
+
+.ool-fade-left {
+  background: linear-gradient(to right, transparent 60%, #EDEBE5 100%);
+}
+.ool-fade-right {
+  background: linear-gradient(to left, transparent 60%, #EDEBE5 100%);
+}
+
+/* ── Mobile ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ool-section {
+    height: auto;
+    min-height: 100vh;
+    padding: 80px 24px;
+  }
+  .ool-panel-wrap {
+    display: none;
+  }
+  .ool-center {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    flex-direction: column;
+    gap: 48px;
+    align-items: center;
+    width: 100%;
+  }
+  .ool-big {
+    font-size: clamp(3.5rem, 14vw, 5rem);
+  }
+  .ool-prefix {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+}

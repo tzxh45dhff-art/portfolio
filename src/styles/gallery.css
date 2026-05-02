@@ -1,0 +1,117 @@
+/* ── Horizontal Scroll Gallery ─────────────────── */
+.gallery-section {
+  position: relative;
+  width: 100%;
+  background: var(--ink);
+  z-index: 10;
+}
+
+.gallery-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px 16px;
+  flex-shrink: 0;
+}
+
+.gallery-label {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  text-transform: uppercase;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+
+.gallery-count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(242,237,228,0.35);
+  text-transform: uppercase;
+}
+
+.gallery-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 48px;
+  padding: 0 48px 48px;
+  flex: 1;
+  will-change: transform;
+}
+
+.gallery-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gallery-tall {
+  width: clamp(300px, 26vw, 420px);
+  align-self: flex-start;
+  margin-top: 6vh;
+}
+.gallery-tall .gallery-img-wrap { aspect-ratio: 3/4; }
+
+.gallery-wide {
+  width: clamp(440px, 38vw, 640px);
+  align-self: center;
+}
+.gallery-wide .gallery-img-wrap { aspect-ratio: 16/10; }
+
+.gallery-square {
+  width: clamp(340px, 28vw, 480px);
+  align-self: flex-end;
+  margin-bottom: 4vh;
+}
+.gallery-square .gallery-img-wrap { aspect-ratio: 1/1; }
+
+.gallery-img-wrap {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(242,237,228,0.04);
+  border: 1px solid rgba(242,237,228,0.08);
+  position: relative;
+}
+
+.gallery-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gallery-card:hover .gallery-img-wrap img {
+  transform: scale(1.04);
+}
+
+.gallery-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: rgba(242,237,228,0.03);
+}
+
+.gallery-caption {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.35);
+  padding-left: 2px;
+}

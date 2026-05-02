@@ -1,0 +1,39 @@
+/* ── About Text Section ────────────────────────── */
+.about-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10vw 4vw 18vw;
+  z-index: 10;
+}
+
+.massive-typography {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 8rem);
+  line-height: 0.9;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: 1400px;
+  letter-spacing: -0.02em;
+}
+
+.neon-block-wrap {
+  position: relative;
+  display: inline-block;
+  color: var(--lime);
+  overflow: hidden;
+}
+
+.neon-block-cover {
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  z-index: 2;
+  transform-origin: right;
+}

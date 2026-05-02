@@ -1,0 +1,64 @@
+/* ── Reset ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F2EDE4;
+  color: #0A0A0A;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { border: none; background: none; cursor: pointer; font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── Variables ─────────────────────────────────── */
+:root {
+  --cream: #F2EDE4;
+  --cream-dark: #E8E0D0;
+  --ink: #0A0A0A;
+  --ink-mid: #3A3A3A;
+  --ink-soft: rgba(10,10,10,0.45);
+  --lime: #C8F73E;
+  --lime-hover: #B8E72E;
+  --white: #FFFFFF;
+  --border: rgba(10,10,10,0.14);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+/* ── Custom Cursor ─────────────────────────────── */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: multiply;
+}
+.cursor.grow {
+  width: 40px; height: 40px;
+  background: rgba(200,247,62,0.6);
+}
+
+/* ── Scroll Progress ───────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--ink);
+  z-index: 9998;
+  transform-origin: left;
+}
+
+/* ── Reveal animation ──────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.vis { opacity: 1; transform: none; }
