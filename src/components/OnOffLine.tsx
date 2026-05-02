@@ -113,11 +113,11 @@ export default function OnOffLine() {
           <motion.p className="ool-desc" style={{ color: descColor }}>
             Projects, builds, and everything I've shipped.
           </motion.p>
-          <a href="/online" className="ool-arrow-btn" aria-label="View Online">
+          <Link to="/online" className="ool-arrow-btn" aria-label="View Online">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M5 15L15 5M15 5H7M15 5V13" stroke="#0A0A0A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </Link>
         </div>
 
         <div className="ool-col">

@@ -10,39 +10,18 @@ import OnOffLine from '../components/OnOffLine'
 import Footer from '../components/Footer'
 
 export default function Home() {
-  const [ready, setReady] = useState(false)
-  const [count, setCount] = useState(0)
-  const [time, setTime] = useState('')
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
-  const [started, setStarted] = useState(false)
 
   const progress = useMotionValue(0)
   const heroProgress = useMotionValue(0)
 
   useEffect(() => {
-    if (!started) return
-    const iv = setInterval(() => {
-      setCount(p => {
-        if (p >= 100) { clearInterval(iv); setTimeout(() => setReady(true), 400); return 100 }
-        return p + 2
-      })
-    }, 24)
-    return () => clearInterval(iv)
-  }, [started])
-
-  useEffect(() => {
-    const tick = () => setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }))
-    tick(); const t = setInterval(tick, 1000); return () => clearInterval(t)
-  }, [])
-
-  useEffect(() => {
-    if (!ready) return
     const lenis = new Lenis({ lerp: 0.07, duration: 1.5, smoothWheel: true })
     let raf: number
     const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop) }
     raf = requestAnimationFrame(loop)
     return () => { cancelAnimationFrame(raf); lenis.destroy() }
-  }, [ready])
+  }, [])
 
   useEffect(() => {
     const onScroll = () => {
@@ -76,17 +55,6 @@ export default function Home() {
 
   return (
     <>
-      <div className={`preloader${ready ? ' done' : ''}`}>
-        <div className="preloader-inner">
-          <div className="preloader-name glitch-effect"><div>JAIS</div><div>SINGH</div></div>
-          {!started ? (
-            <button className="load-btn" onClick={() => setStarted(true)}>LOAD JAIS</button>
-          ) : (
-            <div className="preloader-count">{count}%</div>
-          )}
-        </div>
-      </div>
-
       <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
       <motion.div className="scroll-progress" style={{ scaleX: barScale, width: '100%' }} />
 
