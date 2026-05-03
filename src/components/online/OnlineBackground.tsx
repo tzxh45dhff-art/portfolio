@@ -10,7 +10,9 @@ const SECTIONS = [
 
 export default function OnlineBackground() {
   const fillRef = useRef<HTMLDivElement>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
+  const auroraARef = useRef<HTMLDivElement>(null)
+  const auroraBRef = useRef<HTMLDivElement>(null)
+  const auroraCRef = useRef<HTMLDivElement>(null)
   const [labelIdx, setLabelIdx] = useState(0)
   const [uptime, setUptime] = useState('UPTIME: 00:00:00:000')
 
@@ -22,18 +24,10 @@ export default function OnlineBackground() {
 
       if (fillRef.current) fillRef.current.style.transform = `scaleY(${progress})`
 
-      // Hero grid intensify (only during hero pin)
-      const heroPin = document.querySelector<HTMLElement>('.on-hero-pin')
-      if (gridRef.current && heroPin) {
-        const heroH = heroPin.offsetHeight - window.innerHeight
-        const heroP = Math.max(0, Math.min(1, scrollY / Math.max(1, heroH)))
-        const opa = 0.03 + heroP * 0.07
-        gridRef.current.style.backgroundImage =
-          `linear-gradient(rgba(200,247,62,${opa}) 1px, transparent 1px),` +
-          `linear-gradient(90deg, rgba(200,247,62,${opa}) 1px, transparent 1px)`
-      }
+      if (auroraARef.current) auroraARef.current.style.transform = `translate3d(${-15 + progress * 25}vw, ${-10 + progress * 60}vh, 0)`
+      if (auroraBRef.current) auroraBRef.current.style.transform = `translate3d(${60 - progress * 30}vw, ${20 + progress * 50}vh, 0)`
+      if (auroraCRef.current) auroraCRef.current.style.transform = `translate3d(${10 + progress * 20}vw, ${70 - progress * 40}vh, 0)`
 
-      // Section counter
       const sections = document.querySelectorAll<HTMLElement>('[data-on-section]')
       let active = 0
       sections.forEach((sec) => {
@@ -50,7 +44,6 @@ export default function OnlineBackground() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Live uptime — interval, not RAF (battery-friendly)
   useEffect(() => {
     const start = Date.now()
     const tick = () => {
@@ -74,7 +67,13 @@ export default function OnlineBackground() {
 
   return (
     <>
-      <div ref={gridRef} className="on-bg-grid" />
+      <div className="on-bg-aurora">
+        <div ref={auroraARef} className="on-aurora on-aurora-a" />
+        <div ref={auroraBRef} className="on-aurora on-aurora-b" />
+        <div ref={auroraCRef} className="on-aurora on-aurora-c" />
+      </div>
+      <div className="on-bg-grid" />
+      <div className="on-bg-vignette" />
       <div className="on-scanline" />
       <div className="on-progress-rail">
         <div ref={fillRef} className="on-progress-fill" />

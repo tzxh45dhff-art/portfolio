@@ -106,7 +106,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(145deg, #111 0%, #1a1a1a 50%, #0f0f0f 100%);
+  background: linear-gradient(145deg, #373E26 0%, #454C34 50%, #2C321E 100%);
 }
 
 /* Browser chrome bar */

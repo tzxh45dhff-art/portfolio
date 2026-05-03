@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import Hero from '../components/Hero'
@@ -10,8 +10,6 @@ import OnOffLine from '../components/OnOffLine'
 import Footer from '../components/Footer'
 
 export default function Home() {
-  const [cursor, setCursor] = useState({ x: -100, y: -100 })
-
   const progress = useMotionValue(0)
   const heroProgress = useMotionValue(0)
 
@@ -36,12 +34,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [progress])
 
-  useEffect(() => {
-    const mv = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY })
-    window.addEventListener('mousemove', mv)
-    return () => window.removeEventListener('mousemove', mv)
-  }, [])
-
   // Layer 1: dark bg fades in fast
   const darkOpacity = useTransform(heroProgress, [0.06, 0.36], [0, 1])
   // Layer 2: hero shrinks to 40%, turns greyscale
@@ -55,7 +47,6 @@ export default function Home() {
 
   return (
     <>
-      <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
       <motion.div className="scroll-progress" style={{ scaleX: barScale, width: '100%' }} />
 
       <div style={{ height: '400vh', pointerEvents: 'none' }} aria-hidden />

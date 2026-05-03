@@ -109,7 +109,7 @@ export default function Gallery() {
   const headerSubColor = `rgba(${lerpRGB([242,237,228], [80,80,80], t).join(',')}, 0.7)`
   
   // Cards ALWAYS stay dark for premium contrast
-  const cardBg = '#161616'
+  const cardBg = '#404730'
   const cardBorder = `rgba(200,247,62, ${0.08 + t * 0.12})` // lime border gets stronger on light bg
   const cardShadow = t > 0.3 
     ? `0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(200,247,62,${0.05 + t * 0.1})` 
@@ -120,6 +120,7 @@ export default function Gallery() {
   return (
     <section
       ref={sectionRef}
+      id="projects"
       className="gallery-section"
       style={{
         height: `${Math.max(200, scrollRange + window.innerHeight)}px`,

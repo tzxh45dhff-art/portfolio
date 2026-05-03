@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { movies } from '../../data'
 
 const WAVE_HEIGHTS = [14, 28, 20, 36, 16, 44, 22, 34, 18, 40, 26, 32, 12, 38, 24, 30, 16, 42, 20, 28]
 
@@ -80,11 +81,17 @@ export default function OfflineInterests() {
       </div>
       <div className="off-section-hr" />
 
-      {/* MUSIC */}
+      {/* MUSIC — Spotify Embed */}
       <div className="off-interest-block">
         <div className="off-block-two-col">
-          <div className="off-block-image-wrap off-fm-left">
-            <img src="/assets/music.jpg" alt="Music" className="off-block-image" />
+          <div className="off-block-image-wrap off-fm-left" style={{ minHeight: 232 }}>
+            <iframe
+              style={{ borderRadius: 12, border: 'none', width: '100%', height: 232 }}
+              src="https://open.spotify.com/embed/track/4fzsfWzRhPawzqhX8Qt9F3?utm_source=generator&theme=0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              title="Stronger — Kanye West"
+            />
             <div className="off-waveform">
               {WAVE_HEIGHTS.map((h, i) => {
                 const from = Math.max(6, h * 0.4)
@@ -109,7 +116,7 @@ export default function OfflineInterests() {
           <div className="off-fm-up" style={{ transitionDelay: '0.1s' }}>
             <div className="off-block-num">01</div>
             <div className="off-block-title">Between the Headphones</div>
-            <div className="off-block-body">Frank Ocean. Tyler. Kendrick. Music as architecture.</div>
+            <div className="off-block-body">Kanye. Travis. Kendrick. Music as architecture.</div>
             <div className="off-block-tag">Always · Late Night</div>
             <div className="off-block-pill">LISTENING</div>
           </div>
@@ -117,19 +124,21 @@ export default function OfflineInterests() {
       </div>
       <div className="off-block-divider" />
 
-      {/* CHESS */}
+      {/* BASKETBALL */}
       <div className="off-interest-block" style={{ position: 'relative', overflow: 'hidden' }}>
         <div className="off-block-giant-num">02</div>
         <div className="off-block-two-col reversed">
           <div className="off-block-image-wrap off-fm-right" style={{ position: 'relative' }}>
-            <img src="/assets/chess.jpg" alt="Chess" className="off-block-image" />
+            <div className="off-basketball-visual">
+              <span className="off-bball-emoji">🏀</span>
+            </div>
           </div>
           <div className="off-block-text-content off-fm-up" style={{ transitionDelay: '0.1s' }}>
             <div className="off-block-num">02</div>
-            <div className="off-block-title">Thinking Ahead</div>
-            <div className="off-block-body">Chess as strategy. Every move is a system.</div>
+            <div className="off-block-title">Court Vision</div>
+            <div className="off-block-body">Basketball as flow state. Read the game, move without thinking.</div>
             <div className="off-block-tag">Jalandhar · 2024</div>
-            <div className="off-block-pill">STRATEGY</div>
+            <div className="off-block-pill">HOOPS</div>
           </div>
         </div>
       </div>
@@ -157,22 +166,26 @@ export default function OfflineInterests() {
       </div>
       <div className="off-block-divider" />
 
-      {/* DESIGN + FILM */}
+      {/* MOVIES */}
       <div className="off-interest-block">
         <div className="off-block-design-layout">
           <div className="off-fm-up">
             <div className="off-block-num">04</div>
-            <div className="off-block-title">Visual Thinking</div>
+            <div className="off-block-title">On Screen</div>
             <div className="off-block-body">
-              Design as language. The aesthetic of a thing matters as much as its function.
+              Films that shaped how I see the world. Visual storytelling at its finest.
             </div>
-            <div className="off-block-pill" style={{ marginTop: 16 }}>DESIGN + FILM</div>
+            <div className="off-block-pill" style={{ marginTop: 16 }}>MOVIES</div>
           </div>
           <div className="off-design-grid">
-            {['film-01', 'film-02', 'film-03', 'film-04'].map((id) => (
-              <div key={id} className="off-design-card">
-                <img src={`/assets/${id}.jpg`} alt={id} className="off-design-card-img" />
+            {movies.map((m) => (
+              <div key={m.title} className="off-design-card">
+                <img src={m.poster} alt={m.title} className="off-design-card-img" />
                 <div className="off-design-card-overlay" />
+                <div className="off-movie-label">
+                  <span className="off-movie-title-overlay">{m.title}</span>
+                  <span className="off-movie-year-overlay">{m.year}</span>
+                </div>
               </div>
             ))}
           </div>

@@ -13,7 +13,7 @@ export const personal = {
   resumeUrl: "/resume.pdf",
   buildingSince: "BUILDING WITH AI SINCE 2025",
   socials: {
-    github: "https://github.com/jaisgurnoor",
+    github: "https://github.com/tzxh45dhff-art",
     linkedin: "https://linkedin.com/in/jaisgurnoor",
   },
   missionStatement:
@@ -28,7 +28,7 @@ export const currentStatus = {
 };
 
 export const stats = [
-  { label: "PROJECTS", value: "5" },
+  { label: "PROJECTS", value: "9" },
   { label: "CERTIFICATIONS", value: "6" },
   { label: "STATUS", value: "AVAILABLE", highlight: true },
 ];
@@ -37,66 +37,118 @@ export const projects = [
   {
     id: "kinetic",
     title: "KINETIC",
-    shortDesc: "Financial fear-reduction · Finvasia Hackathon 2026",
+    shortDesc: "Institutional-grade finance platform",
     fullDesc:
       "A financial fear-reduction web app for young Indian investors. Features an AI mentor (KINU) powered by Claude API, behavioural psychology tools, Monte Carlo simulations, and real-time portfolio analytics.",
-    tags: ["REACT", "FASTAPI", "CLAUDE-API", "FINTECH"],
+    tags: ["TYPESCRIPT", "REACT", "FASTAPI", "FINTECH"],
     year: "2026",
     role: "Solo · Full Stack + AI",
     liveUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/kinetic",
     featured: true,
   },
   {
-    id: "chores4u",
-    title: "CHORES4U",
-    shortDesc: "Commercial services marketplace",
+    id: "verifiai",
+    title: "VERIFIAI",
+    shortDesc: "AI Accountability SaaS Platform",
     fullDesc:
-      "Full-stack services marketplace connecting local service providers with customers. Features real-time booking, provider profiles, and a review system.",
-    tags: ["REACT", "NODE.JS", "MONGODB"],
+      "Full-stack SaaS platform for AI accountability and transparency. Provides tools for auditing, monitoring, and verifying AI model outputs with institutional-grade compliance workflows.",
+    tags: ["TYPESCRIPT", "REACT", "AI", "SAAS"],
+    year: "2026",
+    role: "Solo · Full Stack",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/VERIFIAI",
+    featured: true,
+  },
+  {
+    id: "synapse",
+    title: "SYNAPSE",
+    shortDesc: "Social + AI platform · Full Stack",
+    fullDesc:
+      "Social networking platform with AI-powered features. Handles real-time interactions, intelligent feed curation, and conversational AI integrations for an enhanced user experience.",
+    tags: ["JAVASCRIPT", "REACT", "NODE.JS", "AI"],
+    year: "2026",
+    role: "Solo · Full Stack + AI",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/synapse",
+    featured: true,
+  },
+  {
+    id: "slapmac",
+    title: "SLAPMAC",
+    shortDesc: "Native macOS utility · Swift",
+    fullDesc:
+      "A native macOS application built in Swift with a focus on system-level interactions and a polished Apple-native user experience. MIT licensed and published on GitHub Pages.",
+    tags: ["SWIFT", "MACOS", "NATIVE"],
+    year: "2026",
+    role: "Solo · macOS Developer",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/SlapMac",
+    featured: false,
+  },
+  {
+    id: "apex",
+    title: "APEX AGENT",
+    shortDesc: "LLM-powered agent · Python",
+    fullDesc:
+      "An intelligent agent framework built in Python that leverages large language models for autonomous task execution, research, and decision-making workflows.",
+    tags: ["PYTHON", "LLM", "AI", "AGENT"],
+    year: "2026",
+    role: "Solo · AI Developer",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/Apex",
+    featured: false,
+  },
+  {
+    id: "the-unsaid-page",
+    title: "THE UNSAID PAGE",
+    shortDesc: "Creative web experience · Vercel",
+    fullDesc:
+      "An expressive, interactive creative web project deployed on Vercel. Features unique storytelling through dynamic web interactions and immersive visual design.",
+    tags: ["JAVASCRIPT", "CREATIVE", "VERCEL"],
+    year: "2026",
+    role: "Solo · Frontend",
+    liveUrl: "https://the-unsaid-page.vercel.app",
+    githubUrl: "https://github.com/tzxh45dhff-art/The-unsaid-page",
+    featured: false,
+  },
+  {
+    id: "mindpop",
+    title: "MINDPOP",
+    shortDesc: "Interactive learning tool",
+    fullDesc:
+      "An interactive learning and productivity tool that helps users capture, organize, and visualize ideas through an intuitive web interface.",
+    tags: ["HTML", "CSS", "JAVASCRIPT"],
+    year: "2026",
+    role: "Solo · Frontend",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/MindPop",
+    featured: false,
+  },
+  {
+    id: "academic-dashboard",
+    title: "ACADEMIC DASHBOARD",
+    shortDesc: "Performance analytics · TypeScript",
+    fullDesc:
+      "A data-driven academic performance dashboard that visualizes student metrics, tracks progress over time, and provides actionable insights for improvement.",
+    tags: ["TYPESCRIPT", "REACT", "ANALYTICS"],
+    year: "2026",
+    role: "Solo · Full Stack",
+    liveUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/Academic-perfomance-dashboard",
+    featured: false,
+  },
+  {
+    id: "ai-chatbot",
+    title: "AI CHATBOT",
+    shortDesc: "Conversational AI · JavaScript",
+    fullDesc:
+      "A conversational AI chatbot application with natural language processing capabilities, context-aware responses, and an intuitive chat interface.",
+    tags: ["JAVASCRIPT", "AI", "NLP", "NODE.JS"],
     year: "2025",
-    role: "Full Stack Developer",
+    role: "Solo · Full Stack",
     liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: "ecommerce",
-    title: "E-COMMERCE",
-    shortDesc: "Full-stack shopping architecture",
-    fullDesc:
-      "Complete shopping platform with product catalog, cart, user authentication, and order management.",
-    tags: ["REACT", "REDUX", "EXPRESS", "MONGODB"],
-    year: "2025",
-    role: "Full Stack Developer",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: "socialgraph",
-    title: "SOCIAL GRAPH",
-    shortDesc: "Real-time social feed · Firebase",
-    fullDesc:
-      "Social networking app with real-time feed, follow/unfollow system, and live notifications powered by Firebase Firestore.",
-    tags: ["REACT", "FIREBASE", "REAL-TIME"],
-    year: "2024",
-    role: "Frontend + Firebase",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: "tradingbot",
-    title: "TRADING BOT",
-    shortDesc: "HFT dashboard · Chart.js analytics",
-    fullDesc:
-      "High-frequency trading dashboard with live market data visualization and algorithmic signal display.",
-    tags: ["PYTHON", "CHART.JS", "FINTECH", "API"],
-    year: "2024",
-    role: "Developer",
-    liveUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/tzxh45dhff-art/AI-CHATBOT",
     featured: false,
   },
 ];
@@ -200,4 +252,12 @@ export const marqueeItems = [
   "FINTECH",
   "LPU JALANDHAR",
   "CSE AI",
+];
+
+// Movies — TMDB poster CDN
+export const movies = [
+  { title: "INCEPTION", year: "2010", poster: "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg" },
+  { title: "AVENGERS: ENDGAME", year: "2019", poster: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" },
+  { title: "IRON MAN", year: "2008", poster: "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg" },
+  { title: "INTERSTELLAR", year: "2014", poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" },
 ];

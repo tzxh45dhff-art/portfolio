@@ -9,6 +9,7 @@ type Project = {
   tags: string[]
   visual: 'chart' | 'graph' | 'terminal' | 'err'
   vizLabel: string
+  url?: string
 }
 
 const PROJECTS: Project[] = [
@@ -22,6 +23,7 @@ const PROJECTS: Project[] = [
     tags: ['Python', 'MLX', 'CoreML', 'FastAPI'],
     visual: 'chart',
     vizLabel: 'INFERENCE LATENCY · LIVE',
+    url: 'https://github.com/khushibagga20/kinetic-city',
   },
   {
     id: 'APEX',
@@ -33,6 +35,7 @@ const PROJECTS: Project[] = [
     tags: ['Ollama', 'LangChain', 'ChromaDB', 'Next.js'],
     visual: 'graph',
     vizLabel: 'AGENT TOPOLOGY',
+    url: 'https://github.com/tzxh45dhff-art/apex',
   },
   {
     id: 'VECTORAI',
@@ -44,6 +47,7 @@ const PROJECTS: Project[] = [
     tags: ['Actian', 'Python', 'FAISS', 'Docker'],
     visual: 'terminal',
     vizLabel: 'PIPELINE LOG · RUNNING',
+    url: 'https://github.com/tzxh45dhff-art/synapse',
   },
   {
     id: 'STEALTH',
@@ -298,9 +302,20 @@ export default function OnlineDashboard() {
                         ))}
                       </div>
                     </div>
-                    <a href="#" className="on-proj-link">
-                      {p.id === 'STEALTH' ? 'COMING SOON' : 'VIEW PROJECT'} <span>→</span>
-                    </a>
+                    {p.url ? (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="on-proj-link"
+                      >
+                        VIEW ON GITHUB <span>↗</span>
+                      </a>
+                    ) : (
+                      <span className="on-proj-link on-proj-link-disabled">
+                        COMING SOON <span>→</span>
+                      </span>
+                    )}
                   </div>
                   <div className="on-proj-visual">
                     <div className="on-proj-visual-inner">

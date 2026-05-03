@@ -1,6 +1,6 @@
 /* ── Footer ────────────────────────────────────── */
 .footer {
-  background: #0A0A0A;
+  background: #373E26;
   color: var(--cream);
   padding: clamp(60px, 8vw, 100px) clamp(24px, 5vw, 80px) 0;
   border-top: 1px solid rgba(242, 237, 228, 0.08);

@@ -1,11 +1,16 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { personal } from '../data'
 
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Certifications', href: '#certifications' },
-  { label: 'Online', href: '/online' },
-  { label: 'Offline', href: '/offline' },
+type NavLink =
+  | { label: string; kind: 'route'; href: string }
+  | { label: string; kind: 'hash'; hash: string }
+
+const navLinks: NavLink[] = [
+  { label: 'About', kind: 'hash', hash: 'about' },
+  { label: 'Projects', kind: 'hash', hash: 'projects' },
+  { label: 'Online', kind: 'route', href: '/online' },
+  { label: 'Offline', kind: 'route', href: '/offline' },
+  { label: 'Contact', kind: 'route', href: '/contact' },
 ]
 
 const socials = [
@@ -16,6 +21,24 @@ const socials = [
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const handleHashClick = (e: React.MouseEvent, hash: string) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      scrollToId(hash)
+    } else {
+      navigate('/')
+      // Wait for navigation + paint, then scroll
+      setTimeout(() => scrollToId(hash), 80)
+    }
+  }
 
   return (
     <footer className="footer">
@@ -50,9 +73,20 @@ export default function Footer() {
         <div className="footer-col">
           <span className="footer-col-label">Navigate</span>
           <nav className="footer-nav">
-            {navLinks.map(l => (
-              <a key={l.label} href={l.href} className="footer-nav-link">{l.label}</a>
-            ))}
+            {navLinks.map(l =>
+              l.kind === 'route' ? (
+                <Link key={l.label} to={l.href} className="footer-nav-link">{l.label}</Link>
+              ) : (
+                <a
+                  key={l.label}
+                  href={`/#${l.hash}`}
+                  onClick={(e) => handleHashClick(e, l.hash)}
+                  className="footer-nav-link"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
           </nav>
         </div>
 

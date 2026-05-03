@@ -10,8 +10,9 @@ const SECTIONS = [
 ]
 
 export default function OfflineBackground() {
-  const blobRef = useRef<HTMLDivElement>(null)
-  const scanRef = useRef<HTMLDivElement>(null)
+  const blobARef = useRef<HTMLDivElement>(null)
+  const blobBRef = useRef<HTMLDivElement>(null)
+  const blobCRef = useRef<HTMLDivElement>(null)
   const fillRef = useRef<HTMLDivElement>(null)
   const [labelIdx, setLabelIdx] = useState(0)
 
@@ -22,27 +23,11 @@ export default function OfflineBackground() {
       const progress = Math.min(1, scrollY / maxScroll)
 
       if (fillRef.current) fillRef.current.style.transform = `scaleY(${progress})`
-      if (scanRef.current) scanRef.current.style.top = (scrollY % window.innerHeight) + 'px'
 
-      const blob = blobRef.current
-      if (blob) {
-        blob.style.top = progress * 120 + 'vh'
-        let r: number, g: number, b: number, a: number
-        if (progress < 0.4) {
-          const t = progress / 0.4
-          r = Math.round(200 * (1 - t) + 62 * t)
-          g = Math.round(247 * (1 - t) + 130 * t)
-          b = Math.round(62 * (1 - t) + 247 * t)
-          a = 0.07 - 0.02 * t
-        } else {
-          const t = (progress - 0.4) / 0.6
-          r = Math.round(62 * (1 - t) + 180 * t)
-          g = Math.round(130 * (1 - t) + 62 * t)
-          b = Math.round(247 * (1 - t) + 247 * t)
-          a = 0.05 - 0.01 * t
-        }
-        blob.style.background = `rgba(${r},${g},${b},${a})`
-      }
+      // Drift blobs slowly with scroll for parallax
+      if (blobARef.current) blobARef.current.style.transform = `translate(${-20 + progress * 30}vw, ${10 + progress * 80}vh)`
+      if (blobBRef.current) blobBRef.current.style.transform = `translate(${50 - progress * 25}vw, ${30 + progress * 60}vh)`
+      if (blobCRef.current) blobCRef.current.style.transform = `translate(${20 + progress * 15}vw, ${70 - progress * 40}vh)`
 
       const sections = document.querySelectorAll<HTMLElement>('[data-off-section]')
       let active = 0
@@ -62,9 +47,13 @@ export default function OfflineBackground() {
 
   return (
     <>
-      <div className="off-bg-blob"><div ref={blobRef} className="off-bg-blob-inner" /></div>
+      <div className="off-bg-warm">
+        <div ref={blobARef} className="off-blob off-blob-a" />
+        <div ref={blobBRef} className="off-blob off-blob-b" />
+        <div ref={blobCRef} className="off-blob off-blob-c" />
+      </div>
       <div className="off-bg-noise" />
-      <div ref={scanRef} className="off-bg-scanline" />
+      <div className="off-bg-vignette" />
       <div className="off-scroll-progress"><div ref={fillRef} className="off-scroll-progress-fill" /></div>
       <div className="off-section-label">
         <span key={labelIdx} className="off-label-item">

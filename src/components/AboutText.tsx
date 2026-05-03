@@ -32,7 +32,7 @@ export default function AboutText() {
   const ref = useRef<HTMLElement>(null)
 
   return (
-    <motion.section ref={ref} className="about-section">
+    <motion.section ref={ref} id="about" className="about-section">
       <div className="massive-typography">
         {words.map((word, i) => (
           <span key={i} className="neon-block-wrap" style={{ display: 'inline-block', marginRight: '0.22em' }}>

@@ -1,15 +1,17 @@
 /* ── Reset ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; cursor: none; }
 body {
   font-family: 'Inter', sans-serif;
   background: #F2EDE4;
   color: #0A0A0A;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  cursor: none;
 }
+a, button { cursor: none; }
 a { text-decoration: none; color: inherit; }
-button { border: none; background: none; cursor: pointer; font-family: inherit; }
+button { border: none; background: none; font-family: inherit; }
 img { display: block; max-width: 100%; }
 
 /* ── Variables ─────────────────────────────────── */
@@ -22,6 +24,9 @@ img { display: block; max-width: 100%; }
   --lime: #C8F73E;
   --lime-hover: #B8E72E;
   --white: #FFFFFF;
+  --noir: #373E26;
+  --noir-deep: #2C321E;
+  --noir-soft: #454C34;
   --border: rgba(10,10,10,0.14);
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -29,21 +34,97 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Custom Cursor ─────────────────────────────── */
-.cursor {
+.cursor-wrap {
   position: fixed;
-  width: 10px; height: 10px;
-  background: var(--ink);
-  border-radius: 50%;
+  top: 0; left: 0;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background 0.2s;
-  mix-blend-mode: multiply;
+  mix-blend-mode: difference;
+  will-change: transform;
+  opacity: 0.85;
 }
-.cursor.grow {
-  width: 40px; height: 40px;
-  background: rgba(200,247,62,0.6);
+.cursor-ring {
+  width: 22px; height: 22px;
+  border: 1px solid rgba(200, 220, 180, 0.7);
+  border-radius: 50%;
+  position: relative;
+  transition: width 0.25s cubic-bezier(0.16,1,0.3,1),
+              height 0.25s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.2s, background 0.2s;
+  display: flex; align-items: center; justify-content: center;
 }
+.cursor-ring::before {
+  content: '';
+  width: 0; height: 0;
+  transition: opacity 0.2s;
+}
+.cursor-dot {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: rgba(200, 220, 180, 0.8);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+.cursor-label {
+  position: absolute;
+  top: 50%; left: 100%;
+  transform: translateY(-50%) translateX(10px);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(200, 220, 180, 0.85);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+.cursor-wrap.link .cursor-ring {
+  width: 44px; height: 44px;
+  border-color: rgba(200, 220, 180, 0.85);
+  background: rgba(200, 220, 180, 0.04);
+}
+.cursor-wrap.link .cursor-dot { opacity: 0; }
+.cursor-wrap.link .cursor-label { opacity: 1; }
+.cursor-wrap.text .cursor-ring {
+  width: 2px; height: 18px;
+  border-radius: 0;
+  border: none;
+  background: rgba(200, 220, 180, 0.7);
+}
+.cursor-wrap.text .cursor-dot { opacity: 0; }
+.cursor-wrap.click .cursor-ring { transform: scale(0.7); }
+
+/* ── Link hover text scramble ──────────────────── */
+[data-magnet] {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), letter-spacing 0.3s;
+}
+[data-magnet]:hover { letter-spacing: 0.06em; }
+.link-fx {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.link-fx > span {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.76,0,0.24,1);
+}
+.link-fx::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%; left: 0;
+  white-space: nowrap;
+  color: var(--lime);
+  transition: transform 0.5s cubic-bezier(0.76,0,0.24,1);
+}
+.link-fx:hover > span { transform: translateY(-100%); }
+.link-fx:hover::after { transform: translateY(-100%); }
 
 /* ── Scroll Progress ───────────────────────────── */
 .scroll-progress {
@@ -53,6 +134,16 @@ img { display: block; max-width: 100%; }
   background: var(--ink);
   z-index: 9998;
   transform-origin: left;
+}
+
+/* ── Brush canvas global background ─────────────── */
+.brush-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ── Reveal animation ──────────────────────────── */

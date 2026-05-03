@@ -13,7 +13,7 @@ export default function OnOffLine() {
     target: sectionRef,
     offset: ['start end', 'center center'],
   })
-  const bg = useTransform(scrollYProgress, [0, 0.4, 1], ['#0A0A0A', '#1a1a1a', '#EDEBE5'])
+  const bg = useTransform(scrollYProgress, [0, 0.4, 1], ['#373E26', '#454C34', '#EDEBE5'])
   const textColor = useTransform(scrollYProgress, [0, 0.5, 1], ['#F2EDE4', '#F2EDE4', '#0A0A0A'])
   const descColor = useTransform(scrollYProgress, [0, 0.5, 1], ['rgba(242,237,228,0.5)', 'rgba(242,237,228,0.5)', '#555'])
   const topoOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [0, 0, 0.7])
