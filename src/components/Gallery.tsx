@@ -1,54 +1,85 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useMotionValue, useScroll, useSpring } from 'framer-motion'
+import { ExternalLink } from 'lucide-react'
 
-const galleryItems = [
-  { id: 1, src: '/gallery/1.jpg', label: 'HACKATHON, 2026', size: 'tall' },
-  { id: 2, src: '/gallery/2.jpg', label: 'BUILD DAY, 2025', size: 'wide' },
-  { id: 3, src: '/gallery/3.jpg', label: 'WORKSHOP, 2025', size: 'square' },
-  { id: 4, src: '/gallery/4.jpg', label: 'DEMO DAY, 2026', size: 'tall' },
-  { id: 5, src: '/gallery/5.jpg', label: 'CAMPUS, 2025', size: 'wide' },
+const highlighted = [
+  {
+    id: 'synapse',
+    title: 'SYNAPSE',
+    shortDesc: 'Cross-platform learning & social hub — live voice rooms, multiplayer trivia, agentic AI chat, and a deep-focus study bunker.',
+    context: 'Built for ultra-low latency real-time communication with seamless AI integration. The bunker mode uses spaced-repetition algorithms to optimize flashcard study sessions, while the social layer supports concurrent voice channels and live quiz competitions.',
+    tags: ['REACT', 'CAPACITOR', 'FIREBASE', 'AGENTIC AI'],
+    year: '2025',
+    githubUrl: 'https://github.com/tzxh45dhff-art/synapse',
+    liveUrl: '#',
+  },
+  {
+    id: 'kinetic-city',
+    title: 'KINETIC CITY',
+    shortDesc: 'Full-stack fintech platform — market simulators, crash timelines, algorithmic insights, and inclusive financial planning.',
+    context: 'Engineered to demystify market dynamics with a robust FastAPI backend powering real-time data pipelines. Features historical crash replay, Monte Carlo portfolio simulations, and dedicated modules for women\'s financial independence and career trajectory modeling.',
+    tags: ['REACT', 'FASTAPI', 'PYTHON', 'DATA VIZ', 'FINTECH'],
+    year: '2026',
+    githubUrl: 'https://github.com/khushibagga20/kinetic-city',
+    liveUrl: '#',
+  },
+  {
+    id: 'apex',
+    title: 'APEX',
+    shortDesc: 'Proactive macOS AI agent — continuous awareness, local + cloud LLMs, voice/vision, and desktop automation.',
+    context: 'Optimized for Apple Silicon, APEX bridges on-device inference with Claude and Gemini for zero-latency desktop control. Driven by a custom SOUL.md configuration framework that manages long-term memory, real-time screen understanding, and proactive task execution.',
+    tags: ['PYTHON', 'LOCAL LLMS', 'COMPUTER VISION', 'MACOS'],
+    year: '2025',
+    githubUrl: 'https://github.com/tzxh45dhff-art/apex',
+    liveUrl: '#',
+  },
+  {
+    id: 'unsaid-page',
+    title: 'THE UNSAID PAGE',
+    shortDesc: 'Literary sanctuary — tactile page-flip reader, ambient audio, AI-curated prompts, and a digital penpal community.',
+    context: 'A full-stack creative platform designed to feel like a digital Studio Ghibli world. Features Groq-powered AI writing assistance, a rich-text editor with mood-based ambient soundscapes, and a community layer for sharing stories, archiving poems, and connecting through quiet, intentional correspondence.',
+    tags: ['REACT', 'SUPABASE', 'UI/UX', 'GROQ AI'],
+    year: '2025',
+    githubUrl: 'https://github.com/tzxh45dhff-art/the-unsaid-page',
+    liveUrl: '#',
+  },
 ]
 
-// Lerp between two hex colours at progress t (0–1)
-function lerpColor(a: [number, number, number], b: [number, number, number], t: number) {
-  const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v)))
-  return `rgb(${clamp(a[0] + (b[0] - a[0]) * t)}, ${clamp(a[1] + (b[1] - a[1]) * t)}, ${clamp(a[2] + (b[2] - a[2]) * t)})`
+// Lerp between two RGB colors
+function lerpRGB(a: number[], b: number[], t: number) {
+  return a.map((v, i) => Math.round(v + (b[i] - v) * t))
 }
 
-const INK: [number, number, number] = [10, 10, 10]        // #0A0A0A
-const OLIVE: [number, number, number] = [20, 31, 10]      // #141f0a
+const INK = [10, 10, 10]
+const CREAM = [240, 237, 230]
 
 export default function Gallery() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const [scrollRange, setScrollRange] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [bgColor, setBgColor] = useState('rgb(10,10,10)')
   const x = useMotionValue(0)
 
-  // useScroll tracks when the section scrolls through the viewport
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  // Spring adds lag so colour bleed is gradual, not instant
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 20, mass: 1 })
 
-  // Write directly to body.background — no section border visible
+  // Drive background color transition from dark to cream
   useEffect(() => {
     return smoothProgress.on('change', (v) => {
-      const t = Math.max(0, Math.min(1, v / 0.55))
-      document.body.style.background = lerpColor(INK, OLIVE, t)
+      const t = Math.max(0, Math.min(1, v / 0.45))
+      setProgress(t)
+      const rgb = lerpRGB(INK, CREAM, t)
+      setBgColor(`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`)
     })
   }, [smoothProgress])
 
-  // Restore body background when scrolled well past gallery
-  useEffect(() => {
-    return () => { document.body.style.background = '' }
-  }, [])
-
-  // Measure horizontal scroll range
   useEffect(() => {
     const measure = () => {
-      if (trackRef.current && sectionRef.current) {
+      if (trackRef.current) {
         setScrollRange(trackRef.current.scrollWidth - window.innerWidth)
       }
     }
@@ -57,49 +88,121 @@ export default function Gallery() {
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  // Drive horizontal track on vertical scroll
   useEffect(() => {
     const onScroll = () => {
       const section = sectionRef.current
       if (!section || scrollRange <= 0) return
       const rect = section.getBoundingClientRect()
       const sectionH = section.offsetHeight - window.innerHeight
-      const progress = Math.max(0, Math.min(1, -rect.top / sectionH))
-      x.set(-progress * scrollRange)
+      const p = Math.max(0, Math.min(1, -rect.top / sectionH))
+      x.set(-p * scrollRange)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [scrollRange, x])
 
+  // Smooth lerped colors — only section bg transitions
+  const t = progress
+  
+  // Header adapts to background
+  const headerColor = `rgb(${lerpRGB([242,237,228], [20,20,20], t).join(',')})`
+  const headerSubColor = `rgba(${lerpRGB([242,237,228], [80,80,80], t).join(',')}, 0.7)`
+  
+  // Cards ALWAYS stay dark for premium contrast
+  const cardBg = '#161616'
+  const cardBorder = `rgba(200,247,62, ${0.08 + t * 0.12})` // lime border gets stronger on light bg
+  const cardShadow = t > 0.3 
+    ? `0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(200,247,62,${0.05 + t * 0.1})` 
+    : '0 2px 12px rgba(0,0,0,0.15)'
+  
+  const wavyOpacity = Math.min(1, progress * 2)
+
   return (
     <section
       ref={sectionRef}
       className="gallery-section"
-      style={{ height: `${Math.max(200, scrollRange + window.innerHeight)}px` }}
+      style={{
+        height: `${Math.max(200, scrollRange + window.innerHeight)}px`,
+        background: bgColor,
+      }}
     >
       <div className="gallery-sticky">
+        {/* Flowing wavy lines — fade in with scroll */}
+        <div className="gallery-waves" style={{ opacity: wavyOpacity }}>
+          <svg viewBox="0 0 1512 828" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-50,150 Q200,50 400,200 T800,180 T1200,250 T1600,150" stroke="rgba(200,247,62,0.25)" strokeWidth="1.5" fill="none" className="wavy-line" />
+            <path d="M-50,350 Q150,250 350,380 T750,320 T1100,400 T1600,300" stroke="rgba(200,247,62,0.18)" strokeWidth="1" fill="none" className="wavy-line wavy-2" />
+            <path d="M-50,550 Q250,450 500,580 T900,520 T1300,600 T1600,500" stroke="rgba(200,247,62,0.15)" strokeWidth="1.2" fill="none" className="wavy-line wavy-3" />
+            <path d="M-50,700 Q200,620 450,720 T850,680 T1250,750 T1600,680" stroke="rgba(200,247,62,0.12)" strokeWidth="0.8" fill="none" className="wavy-line wavy-4" />
+            <circle cx="200" cy="600" r="120" stroke="rgba(200,247,62,0.08)" strokeWidth="0.6" fill="none" className="wavy-line" />
+            <circle cx="1300" cy="250" r="160" stroke="rgba(200,247,62,0.06)" strokeWidth="0.5" fill="none" className="wavy-line wavy-2" />
+          </svg>
+        </div>
+
         <div className="gallery-header">
-          <span className="gallery-label">CERTIFICATIONS</span>
-          <span className="gallery-count">{galleryItems.length} PHOTOS</span>
+          <span className="gallery-label" style={{ color: headerColor }}>HIGHLIGHTED PROJECTS</span>
+          <span className="gallery-count" style={{ color: headerSubColor }}>{highlighted.length} PROJECTS</span>
         </div>
         <motion.div ref={trackRef} className="gallery-track" style={{ x }}>
-          {galleryItems.map((item) => (
-            <div key={item.id} className={`gallery-card gallery-${item.size}`}>
-              <div className="gallery-img-wrap">
-                <img
-                  src={item.src}
-                  alt={item.label}
-                  onError={e => {
-                    ;(e.currentTarget as HTMLImageElement).style.display = 'none'
-                    const placeholder = e.currentTarget.nextElementSibling as HTMLElement
-                    if (placeholder) placeholder.style.display = 'flex'
-                  }}
-                />
-                <div className="gallery-placeholder" style={{ display: 'none' }}>
-                  <span>{item.size === 'tall' ? '📸' : item.size === 'wide' ? '🖼️' : '◻️'}</span>
+          {highlighted.map((project, i) => (
+            <div
+              key={project.id}
+              className="proj-card"
+              style={{
+                background: cardBg,
+                borderColor: cardBorder,
+                boxShadow: cardShadow,
+              }}
+            >
+              {/* Screenshot placeholder */}
+              <div className="proj-screenshot">
+                <div className="proj-screenshot-placeholder">
+                  <div className="proj-ss-browser-bar">
+                    <span className="proj-ss-dot" />
+                    <span className="proj-ss-dot" />
+                    <span className="proj-ss-dot" />
+                    <span className="proj-ss-url">{project.id}.app</span>
+                  </div>
+                  <div className="proj-ss-body">
+                    <div className="proj-ss-logo">{project.title.charAt(0)}</div>
+                    <div className="proj-ss-lines">
+                      <div className="proj-ss-line" style={{ width: '70%' }} />
+                      <div className="proj-ss-line" style={{ width: '50%' }} />
+                      <div className="proj-ss-line" style={{ width: '60%' }} />
+                    </div>
+                    <div className="proj-ss-grid">
+                      <div className="proj-ss-block" />
+                      <div className="proj-ss-block" />
+                      <div className="proj-ss-block" />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <span className="gallery-caption">{item.label}</span>
+
+              {/* Card content */}
+              <div className="proj-info">
+                <div className="proj-meta">
+                  <span className="proj-num">0{i + 1}</span>
+                  <span className="proj-year">{project.year}</span>
+                </div>
+                <h3 className="proj-title">{project.title}</h3>
+                <p className="proj-desc">{project.shortDesc}</p>
+                <p className="proj-context">{project.context}</p>
+                <div className="proj-tags">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="proj-tag">{tag}</span>
+                  ))}
+                </div>
+                <div className="proj-links">
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="proj-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                    GitHub
+                  </a>
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="proj-link proj-link-live">
+                    <ExternalLink size={14} /> Live
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </motion.div>

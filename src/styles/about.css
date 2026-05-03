@@ -26,8 +26,13 @@
 .neon-block-wrap {
   position: relative;
   display: inline-block;
-  color: var(--lime);
+  color: var(--cream);
   overflow: hidden;
+}
+
+/* Words that should be neon green */
+.neon-word {
+  color: var(--lime);
 }
 
 .neon-block-cover {

@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react'
 
 const CARDS = [
-  { w: 340, h: 520, n: '01', cap: 'Chandigarh · 2024' },
-  { w: 300, h: 340, n: '02', cap: 'Delhi · 2024' },
-  { w: 420, h: 520, n: '03', cap: 'Mumbai · 2023' },
-  { w: 300, h: 340, n: '04', cap: 'Manali · 2024' },
-  { w: 360, h: 520, n: '05', cap: 'Amritsar · 2023' },
-  { w: 320, h: 340, n: '06', cap: 'Shimla · 2024' },
-  { w: 400, h: 520, n: '07', cap: 'Jalandhar · 2025' },
-  { w: 340, h: 340, n: '08', cap: 'Online · 2025' },
+  { w: 340, h: 520, n: '01', cap: 'Chandigarh · 2024', img: '/assets/gallery-01.jpg' },
+  { w: 300, h: 340, n: '02', cap: 'Delhi · 2024', img: '/assets/gallery-02.jpg' },
+  { w: 420, h: 520, n: '03', cap: 'Mumbai · 2023', img: '/assets/gallery-03.jpg' },
+  { w: 300, h: 340, n: '04', cap: 'Manali · 2024', img: '/assets/gallery-04.jpg' },
+  { w: 360, h: 520, n: '05', cap: 'Amritsar · 2023', img: '/assets/gallery-05.jpg' },
+  { w: 320, h: 340, n: '06', cap: 'Shimla · 2024', img: '/assets/gallery-06.jpg' },
+  { w: 400, h: 520, n: '07', cap: 'Jalandhar · 2025', img: '/assets/gallery-07.jpg' },
+  { w: 340, h: 340, n: '08', cap: 'Online · 2025', img: '/assets/gallery-08.jpg' },
 ]
 
 export default function OfflineGallery() {
@@ -60,7 +60,7 @@ export default function OfflineGallery() {
         <div ref={trackRef} className="off-gallery-track">
           {CARDS.map((c) => (
             <div key={c.n} className="off-gallery-card" style={{ width: c.w, height: c.h }}>
-              <div className="off-gallery-card-placeholder">{c.n}</div>
+              <img src={c.img} alt={c.cap} className="off-gallery-card-img" />
               <div className="off-gallery-caption">{c.cap}</div>
             </div>
           ))}

@@ -1,0 +1,165 @@
+/* ── Contact page ───────────────────────────── */
+.contact-page {
+  min-height: 100svh;
+  background: #F0EDE6;
+  color: #0f0f0f;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  padding: 36px;
+  position: relative;
+}
+
+.contact-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(15,15,15,0.55);
+  text-decoration: none;
+  transition: color .2s;
+}
+.contact-back:hover { color: #0f0f0f; }
+
+.contact-wrap {
+  max-width: 980px;
+  margin: 60px auto 80px;
+}
+
+.contact-hd { margin-bottom: 56px; }
+.contact-eyebrow {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(15,15,15,0.45);
+  margin-bottom: 14px;
+}
+.contact-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7vw, 5.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: #0f0f0f;
+  margin-bottom: 18px;
+}
+.contact-sub {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.98rem; line-height: 1.55;
+  color: rgba(15,15,15,0.7);
+  max-width: 480px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.contact-label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(15,15,15,0.45);
+  margin-bottom: 18px;
+}
+
+/* Socials */
+.contact-socials {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.contact-social {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid rgba(15,15,15,0.1);
+  text-decoration: none;
+  color: #0f0f0f;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: padding .25s cubic-bezier(0.16,1,0.3,1), color .2s;
+}
+.contact-social:hover {
+  padding-left: 14px;
+  color: #2a4a2a;
+}
+.contact-handle {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(15,15,15,0.45);
+  font-weight: 400;
+}
+
+/* Form */
+.contact-form {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.contact-field {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.contact-field > span {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(15,15,15,0.55);
+}
+.contact-field input,
+.contact-field textarea {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(15,15,15,0.12);
+  border-radius: 2px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: #0f0f0f;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  resize: vertical;
+}
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+  color: rgba(15,15,15,0.35);
+}
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: #0f0f0f;
+  background: #fff;
+}
+
+.contact-submit {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+  background: #C8F73E; color: #0f0f0f;
+  padding: 14px 22px;
+  border: none; border-radius: 2px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  margin-top: 6px;
+  align-self: flex-start;
+}
+.contact-submit:hover { background: #a8d420; transform: scale(.98); }
+
+.contact-fineprint {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: rgba(15,15,15,0.45);
+  letter-spacing: 0.5px;
+}
+.contact-fineprint a {
+  color: rgba(15,15,15,0.7);
+  border-bottom: 1px solid rgba(15,15,15,0.3);
+}
+.contact-fineprint a:hover { color: #0f0f0f; }
+
+@media (max-width: 760px) {
+  .contact-page { padding: 20px; }
+  .contact-wrap { margin: 32px auto 60px; }
+  .contact-hd { margin-bottom: 40px; }
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
 
 const CARDS = [
-  { code: 'IG', label: 'Instagram', href: 'https://instagram.com' },
-  { code: 'GH', label: 'GitHub', href: 'https://github.com' },
-  { code: 'LI', label: 'LinkedIn', href: 'https://linkedin.com' },
-  { code: 'TW', label: 'Twitter', href: 'https://twitter.com' },
-  { code: 'YT', label: 'YouTube', href: 'https://youtube.com' },
-  { code: 'BE', label: 'Behance', href: 'https://behance.net' },
+  { code: 'IG', label: 'Instagram', href: 'https://instagram.com', img: '/assets/social-ig.jpg' },
+  { code: 'GH', label: 'GitHub', href: 'https://github.com', img: '/assets/social-gh.jpg' },
+  { code: 'LI', label: 'LinkedIn', href: 'https://linkedin.com', img: '/assets/social-li.jpg' },
+  { code: 'TW', label: 'Twitter', href: 'https://twitter.com', img: '/assets/social-tw.jpg' },
+  { code: 'YT', label: 'YouTube', href: 'https://youtube.com', img: '/assets/social-yt.jpg' },
+  { code: 'BE', label: 'Behance', href: 'https://behance.net', img: '/assets/social-be.jpg' },
 ]
 
 export default function OfflineSocials() {
@@ -94,7 +94,7 @@ export default function OfflineSocials() {
         {CARDS.map((c) => (
           <a key={c.code} href={c.href} target="_blank" rel="noopener noreferrer" className="off-social-card">
             <div className="off-social-card-inner">
-              <div className="off-social-card-placeholder">{c.code}</div>
+              <img src={c.img} alt={c.label} className="off-social-card-img" />
               <div className="off-social-caption">
                 <span>{c.label}</span>
                 <span>↗</span>

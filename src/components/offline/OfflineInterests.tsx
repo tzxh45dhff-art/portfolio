@@ -84,7 +84,7 @@ export default function OfflineInterests() {
       <div className="off-interest-block">
         <div className="off-block-two-col">
           <div className="off-block-image-wrap off-fm-left">
-            <div className="off-block-image-placeholder">♪</div>
+            <img src="/assets/music.jpg" alt="Music" className="off-block-image" />
             <div className="off-waveform">
               {WAVE_HEIGHTS.map((h, i) => {
                 const from = Math.max(6, h * 0.4)
@@ -122,7 +122,7 @@ export default function OfflineInterests() {
         <div className="off-block-giant-num">02</div>
         <div className="off-block-two-col reversed">
           <div className="off-block-image-wrap off-fm-right" style={{ position: 'relative' }}>
-            <div className="off-block-image-placeholder">♟</div>
+            <img src="/assets/chess.jpg" alt="Chess" className="off-block-image" />
           </div>
           <div className="off-block-text-content off-fm-up" style={{ transitionDelay: '0.1s' }}>
             <div className="off-block-num">02</div>
@@ -169,9 +169,9 @@ export default function OfflineInterests() {
             <div className="off-block-pill" style={{ marginTop: 16 }}>DESIGN + FILM</div>
           </div>
           <div className="off-design-grid">
-            {['FRAME 01', 'FRAME 02', 'FRAME 03', 'FRAME 04'].map((label) => (
-              <div key={label} className="off-design-card">
-                <div className="off-design-card-placeholder">{label}</div>
+            {['film-01', 'film-02', 'film-03', 'film-04'].map((id) => (
+              <div key={id} className="off-design-card">
+                <img src={`/assets/${id}.jpg`} alt={id} className="off-design-card-img" />
                 <div className="off-design-card-overlay" />
               </div>
             ))}

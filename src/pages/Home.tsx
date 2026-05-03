@@ -62,7 +62,7 @@ export default function Home() {
 
       <div className="scene-container">
         {/* Layer 1 — solid dark bg + marquee */}
-        <motion.div className="scene" style={{ zIndex: 1, opacity: darkOpacity }}>
+        <motion.div className="scene" style={{ zIndex: 1, opacity: darkOpacity, pointerEvents: 'none' }}>
           <DarkBg />
         </motion.div>
 
@@ -81,7 +81,7 @@ export default function Home() {
         </motion.div>
 
         {/* Layer 3 — signature draws on top */}
-        <motion.div className="scene" style={{ zIndex: 3, opacity: sigOpacity }}>
+        <motion.div className="scene" style={{ zIndex: 3, opacity: sigOpacity, pointerEvents: 'none' }}>
           <Signature progress={heroProgress} />
         </motion.div>
       </div>
