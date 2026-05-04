@@ -14,7 +14,7 @@ export const personal = {
   buildingSince: "BUILDING WITH AI SINCE 2025",
   socials: {
     github: "https://github.com/tzxh45dhff-art",
-    linkedin: "https://linkedin.com/in/jaisgurnoor",
+    linkedin: "https://linkedin.com/in/jaisgurnoor-singh-1477ba391",
   },
   missionStatement:
     "Building intelligent systems that turn complexity into clarity. Full-stack developer obsessed with the convergence of design, artificial intelligence, and finance.",
@@ -173,7 +173,7 @@ export const certificates = [
       "Core AI concepts, machine learning, computer vision, NLP, and conversational AI workloads on Azure.",
     tags: ["AZURE", "AI/ML", "CLOUD"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: true,
   },
   {
@@ -186,7 +186,7 @@ export const certificates = [
       "Advanced React patterns, component architecture, testing strategies, and performance optimization.",
     tags: ["REACT", "JAVASCRIPT", "UI/UX"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: true,
   },
   {
@@ -199,7 +199,7 @@ export const certificates = [
       "Advanced Python programming — OOP, data structures, algorithms, and automation scripting.",
     tags: ["PYTHON", "OOP", "AUTOMATION"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: false,
   },
   {
@@ -212,7 +212,7 @@ export const certificates = [
       "Semantic HTML5, Canvas API, Web Storage, responsive design patterns, and accessibility standards.",
     tags: ["HTML5", "WEB", "A11Y"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: false,
   },
   {
@@ -225,7 +225,7 @@ export const certificates = [
       "Fundamentals of artificial intelligence, neural networks, deep learning, and ethical AI practices.",
     tags: ["AI", "DEEP LEARNING", "ETHICS"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: true,
   },
   {
@@ -238,7 +238,7 @@ export const certificates = [
       "Applying AI/ML techniques to disaster prediction, emergency response optimization, and crisis analytics.",
     tags: ["AI", "GIS", "ANALYTICS"],
     credentialUrl: "#",
-    githubUrl: "https://github.com/jaisgurnoor",
+    githubUrl: "https://github.com/tzxh45dhff-art",
     featured: false,
   },
 ];
@@ -250,7 +250,7 @@ export const marqueeItems = [
   "FASTAPI",
   "CLAUDE API",
   "FINTECH",
-  "LPU JALANDHAR",
+  "Chitkara University",
   "CSE AI",
 ];
 

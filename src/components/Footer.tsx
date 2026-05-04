@@ -1,4 +1,5 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import TransitionLink from './TransitionLink'
 import { personal } from '../data'
 
 type NavLink =
@@ -75,7 +76,7 @@ export default function Footer() {
           <nav className="footer-nav">
             {navLinks.map(l =>
               l.kind === 'route' ? (
-                <Link key={l.label} to={l.href} className="footer-nav-link">{l.label}</Link>
+                <TransitionLink key={l.label} to={l.href} className="footer-nav-link">{l.label}</TransitionLink>
               ) : (
                 <a
                   key={l.label}

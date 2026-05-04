@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import TransitionLink from '../components/TransitionLink'
 import { ArrowLeft, Send, Mail } from 'lucide-react'
 
 const Github = (p: { size?: number }) => (
@@ -43,10 +43,10 @@ export default function Contact() {
 
   return (
     <main className="contact-page">
-      <Link to="/" className="contact-back">
+      <TransitionLink to="/" className="contact-back">
         <ArrowLeft size={14} strokeWidth={2.4} />
         <span>Back</span>
-      </Link>
+      </TransitionLink>
 
       <div className="contact-wrap">
         <header className="contact-hd">

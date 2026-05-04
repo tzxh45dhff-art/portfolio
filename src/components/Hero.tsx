@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, MotionValue, useTransform } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import TransitionLink from './TransitionLink'
 import { personal } from '../data'
 import ContourCanvas from './ContourCanvas'
 
@@ -41,7 +41,7 @@ export default function Hero({ progress }: Props) {
         <div className="nav-mono">{personal.monogram}</div>
 
         <div className="nav-right">
-          <Link to="/contact" className="btn-lime">CONTACT</Link>
+          <TransitionLink to="/contact" className="btn-lime">CONTACT</TransitionLink>
           <a href={personal.resumeUrl} download className="btn-outline">DOWNLOAD RESUME</a>
           <button className="btn-sq" aria-label="Menu">
             <svg width="15" height="10" viewBox="0 0 15 10" fill="none">

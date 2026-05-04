@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import TransitionLink from '../TransitionLink'
 
 export default function OnlineFooter() {
   const ref = useRef<HTMLDivElement>(null)
@@ -28,11 +28,11 @@ export default function OnlineFooter() {
       </div>
       <div className="on-footer-sub">The offline side is where the screen goes dark.</div>
       <div>
-        <Link to="/offline" className="on-cta-btn">
+        <TransitionLink to="/offline" className="on-cta-btn">
           GO TO OFFLINE <span className="on-cta-arrow">→</span>
-        </Link>
+        </TransitionLink>
       </div>
-      <Link to="/" className="on-back-link">← Back to Home</Link>
+      <TransitionLink to="/" className="on-back-link">← Back to Home</TransitionLink>
     </div>
   )
 }

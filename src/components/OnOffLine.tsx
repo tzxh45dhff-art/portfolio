@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import TransitionLink from './TransitionLink'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 
 export default function OnOffLine() {
@@ -113,11 +113,11 @@ export default function OnOffLine() {
           <motion.p className="ool-desc" style={{ color: descColor }}>
             Projects, builds, and everything I've shipped.
           </motion.p>
-          <Link to="/online" className="ool-arrow-btn" aria-label="View Online">
+          <TransitionLink to="/online" className="ool-arrow-btn" aria-label="View Online">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M5 15L15 5M15 5H7M15 5V13" stroke="#0A0A0A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </Link>
+          </TransitionLink>
         </div>
 
         <div className="ool-col">
@@ -128,11 +128,11 @@ export default function OnOffLine() {
           <motion.p className="ool-desc" style={{ color: descColor }}>
             Interests, obsessions, and life beyond the screen.
           </motion.p>
-          <Link to="/offline" className="ool-arrow-btn" aria-label="View Offline">
+          <TransitionLink to="/offline" className="ool-arrow-btn" aria-label="View Offline">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M5 15L15 5M15 5H7M15 5V13" stroke="#0A0A0A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </Link>
+          </TransitionLink>
         </div>
       </div>
     </motion.section>

@@ -1,60 +1,57 @@
 /* ── Preloader ─────────────────────────────────── */
-.preloader {
+.neon-preloader {
   position: fixed;
   inset: 0;
-  background: var(--ink);
+  background: #C8F73E; /* Neon Green */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-.preloader.done { opacity: 0; visibility: hidden; }
-.preloader-inner {
-  text-align: center;
-  color: var(--cream);
-}
-.preloader-name {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(3rem, 8vw, 7rem);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-.preloader-count {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 4px;
-  color: var(--lime);
-  margin-top: 1.5rem;
+  overflow: hidden;
+  transform-origin: center center;
 }
 
-/* Glitch effect */
-.glitch-effect {
-  animation: glitch 3s infinite;
+.neon-preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
 }
-@keyframes glitch {
-  0% { opacity: 1; transform: translate(0); }
-  2% { transform: translate(-2px, 1px); opacity: 0.8; }
-  4% { transform: translate(2px, -1px); opacity: 1; }
-  6% { transform: translate(0); opacity: 1; }
-  100% { opacity: 1; transform: translate(0); }
+
+.initials-container {
+  display: flex;
+  gap: 0.5rem;
+  perspective: 1000px;
+}
+
+.initial-letter {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(6rem, 15vw, 12rem);
+  line-height: 0.8;
+  color: var(--ink); /* Dark color for contrast against neon */
+  text-transform: uppercase;
+  display: inline-block;
+  transform-style: preserve-3d;
 }
 
 /* Load Button */
-.load-btn {
-  margin-top: 1.5rem;
+.enter-btn {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 4px;
-  color: var(--lime);
-  border: 1px solid var(--lime);
-  padding: 10px 24px;
+  color: var(--ink);
+  background: transparent;
+  border: 2px solid var(--ink);
+  padding: 16px 32px;
   text-transform: uppercase;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
-.load-btn:hover {
-  background: rgba(200, 247, 62, 0.1);
-  box-shadow: 0 0 12px rgba(200, 247, 62, 0.2);
+
+.enter-btn:hover {
+  background: var(--ink);
+  color: #C8F73E;
 }

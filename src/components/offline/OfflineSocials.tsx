@@ -1,12 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 const CARDS = [
-  { code: 'IG', label: 'Instagram', href: 'https://instagram.com', img: '/assets/social-ig.jpg' },
-  { code: 'GH', label: 'GitHub', href: 'https://github.com', img: '/assets/social-gh.jpg' },
-  { code: 'LI', label: 'LinkedIn', href: 'https://linkedin.com', img: '/assets/social-li.jpg' },
-  { code: 'TW', label: 'Twitter', href: 'https://twitter.com', img: '/assets/social-tw.jpg' },
-  { code: 'YT', label: 'YouTube', href: 'https://youtube.com', img: '/assets/social-yt.jpg' },
-  { code: 'BE', label: 'Behance', href: 'https://behance.net', img: '/assets/social-be.jpg' },
+  { code: 'IG', label: 'Instagram', href: 'https://www.instagram.com/jais_132/', img: '/assets/social-ig.jpg' },
+  { code: 'GH', label: 'GitHub', href: 'https://github.com/tzxh45dhff-art', img: 'https://github.com/tzxh45dhff-art.png' },
+  { code: 'LI', label: 'LinkedIn', href: 'https://linkedin.com/in/jaisgurnoor-singh-1477ba391', img: '/assets/social-li.jpg' },
+  { code: 'TW', label: 'Twitter', href: 'https://x.com/JaisgurnoorS', img: '/assets/social-tw.jpg' },
 ]
 
 export default function OfflineSocials() {
