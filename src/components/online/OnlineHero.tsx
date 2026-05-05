@@ -1,13 +1,6 @@
 import { useEffect, useRef } from 'react'
 
 const BADGES = ['LOCAL LLMS', 'VECTOR DB', 'CLOUD ARCHITECTURE', 'AGENTS']
-const BOOT = [
-  { line: 'KERNEL v4.21.0', tone: 'ok' },
-  { line: 'ENV: PRODUCTION', tone: 'ok' },
-  { line: 'MODELS: LOADED', tone: 'ok' },
-  { line: 'VECTORS: INDEXED', tone: 'ok' },
-  { line: 'SLEEP: DISABLED', tone: 'warn' },
-] as const
 
 export default function OnlineHero() {
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -30,9 +23,6 @@ export default function OnlineHero() {
       bio?.classList.add('in')
     })
 
-    wrapper.querySelectorAll<HTMLElement>('.on-boot-line').forEach((el, i) => {
-      setTimeout(() => el.classList.add('in'), 500 + i * 120)
-    })
     wrapper.querySelectorAll<HTMLElement>('.on-badge').forEach((el, i) => {
       setTimeout(() => el.classList.add('in'), 1000 + i * 80)
     })
@@ -58,29 +48,22 @@ export default function OnlineHero() {
     <div ref={wrapperRef} className="on-hero-pin" data-on-section="0">
       <div className="on-hero-sticky">
         <div className="on-hero-status">
-          <div className="on-hero-status-dot" />
-          SYSTEM: ONLINE · STATUS: COMPILING
-        </div>
-
-        <div className="on-hero-boot">
-          {BOOT.map((b) => (
-            <div key={b.line} className={`on-boot-line ${b.tone}`}>{b.line}</div>
-          ))}
+          <div className="on-hero-status-dot" style={{ animation: 'none', opacity: 0.8 }} />
+          Currently building intelligent systems
         </div>
 
         <div ref={titleRef} className="on-hero-title">
-          ONLINE<span className="on-hero-cursor">█</span>
-          <div className="on-glitch-layer" aria-hidden="true">ONLINE</div>
+          ONLINE<span className="on-hero-cursor" style={{ animation: 'none', opacity: 0.5 }}>.</span>
         </div>
 
         <div className="on-hero-sub">
           <div className="on-hero-left">
-            <div className="on-hero-line-1">ROOT ACCESS</div>
+            <div className="on-hero-line-1">PORTFOLIO</div>
             <div className="on-hero-line-2">Full Stack Developer · AI Systems</div>
-            <div className="on-hero-line-3">Shipping intelligent systems</div>
+            <div className="on-hero-line-3">Crafting premium digital experiences</div>
           </div>
           <div className="on-hero-bio">
-            Architecting software that bridges low-level systems and real-world AI applications. Code, compute, and continuous deployment.
+            Obsessed with performance, clean architecture, and building products that bridge complex systems with beautiful, intuitive interfaces. 
           </div>
         </div>
 

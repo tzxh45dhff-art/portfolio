@@ -12,54 +12,42 @@ type Project = {
   url?: string
 }
 
-const PROJECTS: Project[] = [
-  {
-    id: 'KINETIC',
-    branch: 'KINETIC — main',
-    index: '01 / 04',
-    name: 'KINETIC',
-    desc:
-      'A real-time motion capture pipeline that feeds into a local LLM for action classification. Sub-20ms inference on Apple Silicon.',
-    tags: ['Python', 'MLX', 'CoreML', 'FastAPI'],
-    visual: 'chart',
-    vizLabel: 'INFERENCE LATENCY · LIVE',
-    url: 'https://github.com/khushibagga20/kinetic-city',
-  },
-  {
-    id: 'APEX',
-    branch: 'APEX — awareness/main',
-    index: '02 / 04',
-    name: 'APEX Continuous Awareness',
-    desc:
-      'Agent framework for persistent context. Maintains a rolling window of environmental state, fed into a retrieval-augmented reasoning loop.',
-    tags: ['Ollama', 'LangChain', 'ChromaDB', 'Next.js'],
-    visual: 'graph',
-    vizLabel: 'AGENT TOPOLOGY',
-    url: 'https://github.com/tzxh45dhff-art/apex',
-  },
-  {
-    id: 'VECTORAI',
-    branch: 'VECTORAI — build/prod',
-    index: '03 / 04',
-    name: 'Actian VectorAI Build',
-    desc:
-      "High-throughput vector embedding pipeline using Actian's columnar engine. Handles 10M+ document ingestion with semantic clustering.",
-    tags: ['Actian', 'Python', 'FAISS', 'Docker'],
-    visual: 'terminal',
-    vizLabel: 'PIPELINE LOG · RUNNING',
-    url: 'https://github.com/tzxh45dhff-art/synapse',
-  },
-  {
-    id: 'STEALTH',
-    branch: 'UNTITLED — wip/main',
-    index: '04 / 04',
-    name: 'STEALTH',
-    desc: 'Under active development. Details shipping soon. Built on local LLMs + edge inference.',
-    tags: ['CLASSIFIED'],
-    visual: 'err',
-    vizLabel: 'STATUS: BUILDING',
-  },
-]
+import { projects } from '../../data'
+
+const featuredIds = ['kinetic', 'synapse', 'apex', 'the-unsaid-page', 'mindpop']
+
+const visualMapping: Record<string, Project['visual']> = {
+  'kinetic': 'chart',
+  'synapse': 'terminal',
+  'apex': 'graph',
+  'the-unsaid-page': 'chart',
+  'mindpop': 'graph'
+}
+
+const vizLabelMapping: Record<string, string> = {
+  'kinetic': 'INFERENCE LATENCY · LIVE',
+  'synapse': 'PIPELINE LOG · RUNNING',
+  'apex': 'AGENT TOPOLOGY',
+  'the-unsaid-page': 'CREATIVE RENDER · ACTIVE',
+  'mindpop': 'INTERACTIVE NODES · LIVE'
+}
+
+const PROJECTS: Project[] = featuredIds.map((id, index) => {
+  const p = projects.find(proj => proj.id === id)
+  if (!p) throw new Error(`Project ${id} not found in data.ts`)
+  
+  return {
+    id: p.id.toUpperCase(),
+    branch: `${p.title.toUpperCase()} — main`,
+    index: `0${index + 1} / 05`,
+    name: p.title,
+    desc: p.fullDesc,
+    tags: p.tags,
+    visual: visualMapping[id] || 'err',
+    vizLabel: vizLabelMapping[id] || 'STATUS: OK',
+    url: p.githubUrl || p.liveUrl,
+  }
+})
 
 function ChartViz() {
   return (
@@ -219,7 +207,7 @@ export default function OnlineDashboard() {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
-  const [counter, setCounter] = useState('01 / 04')
+  const [counter, setCounter] = useState('01 / 05')
 
   useEffect(() => {
     const wrapper = wrapperRef.current
@@ -254,11 +242,11 @@ export default function OnlineDashboard() {
       const maxX = -(trackW - vw + 160)
       track.style.transform = `translateX(${p * maxX}px)`
 
-      const cardIdx = Math.min(3, Math.floor(p * 4))
-      setCounter(String(cardIdx + 1).padStart(2, '0') + ' / 04')
+      const cardIdx = Math.min(4, Math.floor(p * 5))
+      setCounter(String(cardIdx + 1).padStart(2, '0') + ' / 05')
 
       track.querySelectorAll<HTMLElement>('.on-proj-card').forEach((c, i) => {
-        const dist = Math.abs(p * 4 - i)
+        const dist = Math.abs(p * 5 - i)
         const bright = dist < 1 ? 1 : Math.max(0.5, 1 - (dist - 1) * 0.3)
         c.style.filter = `brightness(${bright})`
       })

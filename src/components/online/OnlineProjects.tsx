@@ -1,128 +1,173 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { projects } from '../../data'
+
+// Optional screenshot field — when a project has `image`, that image fills the
+// CRT screen. When missing, a "NO SIGNAL" placeholder pattern shows instead.
+type ProjectWithImage = (typeof projects)[number] & { image?: string }
+
+function Placeholder({ id }: { id: string }) {
+  return (
+    <div className="on-mc-placeholder">
+      <svg viewBox="0 0 200 120" className="on-mc-svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id={`stripes-${id}`} width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="14" height="14" fill="rgba(200,247,62,0.02)" />
+            <line x1="0" y1="0" x2="0" y2="14" stroke="rgba(200,247,62,0.08)" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="200" height="120" fill={`url(#stripes-${id})`} />
+        <text x="100" y="58" textAnchor="middle" fontFamily="monospace" fontSize="11"
+          fill="rgba(200,247,62,0.55)" letterSpacing="3">NO SIGNAL</text>
+        <text x="100" y="72" textAnchor="middle" fontFamily="monospace" fontSize="7"
+          fill="rgba(200,247,62,0.35)" letterSpacing="2">AWAITING FEED · {id.toUpperCase()}</text>
+      </svg>
+    </div>
+  )
+}
 
 export default function OnlineProjects() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const angleRef = useRef(0)
-  const velocityRef = useRef(0.3) // base auto-spin speed
-  const targetVelRef = useRef(0.3)
-  const rafRef = useRef(0)
-  const lastScrollY = useRef(0)
-  const isPaused = useRef(false)
-  const [hovered, setHovered] = useState<number | null>(null)
-  const [, forceRender] = useState(0)
+  const tileRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const channelRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const barRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState<number | null>(null)
+  const [enteredTiles, setEnteredTiles] = useState<Set<number>>(new Set())
+  const [enteredChannels, setEnteredChannels] = useState<Set<number>>(new Set())
+  const [barIn, setBarIn] = useState(false)
+  const [now, setNow] = useState(() => new Date())
 
-  const count = projects.length
-  const sliceAngle = 360 / count
-
-  // Scroll-reactive velocity
   useEffect(() => {
-    let ticking = false
-    const onScroll = () => {
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(() => {
-        const currentY = window.scrollY
-        const delta = currentY - lastScrollY.current
-        lastScrollY.current = currentY
-
-        // Only react when section is near viewport
-        const section = sectionRef.current
-        if (section) {
-          const rect = section.getBoundingClientRect()
-          const inView = rect.top < window.innerHeight && rect.bottom > 0
-          if (inView && Math.abs(delta) > 1) {
-            // Map scroll delta to velocity: scroll down = positive, scroll up = negative
-            const boost = delta * 0.08
-            targetVelRef.current = boost
-          } else if (inView) {
-            // Slowly decay towards base speed
-            targetVelRef.current = 0.3
-          }
-        }
-        ticking = false
-      })
-    }
-    lastScrollY.current = window.scrollY
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          const target = e.target as HTMLElement
+          const kind = target.dataset.mcKind
+          const idx = Number(target.dataset.mcIdx)
+          if (kind === 'tile') setEnteredTiles((s) => (s.has(idx) ? s : new Set(s).add(idx)))
+          else if (kind === 'channel') setEnteredChannels((s) => (s.has(idx) ? s : new Set(s).add(idx)))
+          else if (kind === 'bar') setBarIn(true)
+          io.unobserve(target)
+        })
+      },
+      { threshold: 0.1, rootMargin: '-40px' }
+    )
+    tileRefs.current.forEach((el) => el && io.observe(el))
+    channelRefs.current.forEach((el) => el && io.observe(el))
+    if (barRef.current) io.observe(barRef.current)
+    return () => io.disconnect()
   }, [])
 
-  // Animation loop
   useEffect(() => {
-    const tick = () => {
-      if (!isPaused.current) {
-        // Smoothly lerp velocity towards target
-        velocityRef.current += (targetVelRef.current - velocityRef.current) * 0.04
-        angleRef.current += velocityRef.current
-        forceRender((n) => n + 1)
-      }
-      rafRef.current = requestAnimationFrame(tick)
-    }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
   }, [])
 
-  const handleMouseEnter = useCallback((idx: number) => {
-    isPaused.current = true
-    setHovered(idx)
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    isPaused.current = false
-    setHovered(null)
-  }, [])
-
-  // 3D carousel radius based on card count
-  const radius = count * 48
+  const liveCount = projects.filter((p) => p.featured).length
+  const timeStr = now.toLocaleTimeString('en-GB', { hour12: false })
 
   return (
-    <div ref={sectionRef} className="on-projects-section" data-on-section="3">
-      <div className="on-projects-header">
-        <span className="on-proj-head-left">ALL</span>
-        <span className="on-proj-head-right">PROJECTS</span>
+    <div ref={sectionRef} className="on-mc-section" data-on-section="3">
+      <div className="on-mc-header">
+        <span className="on-proj-head-left">MISSION</span>
+        <span className="on-proj-head-right">CONTROL</span>
       </div>
-      <p className="on-proj-head-sub">Scroll to spin · Hover to inspect</p>
+      <div ref={barRef} data-mc-kind="bar" className={`on-mc-bar ${barIn ? 'in' : ''}`}>
+        <span className="on-mc-bar-dot" />
+        <span className="on-mc-bar-label">ALL CHANNELS · {projects.length} ACTIVE</span>
+        <span className="on-mc-bar-rule" />
+        <span className="on-mc-bar-priority">{liveCount} ON PRIORITY FEED</span>
+        <span className="on-mc-bar-rule" />
+        <span className="on-mc-bar-clock">{timeStr} UTC</span>
+      </div>
 
-      <div className="on-carousel-viewport">
-        <div
-          className="on-carousel-ring"
-          style={{
-            transform: `rotateY(${angleRef.current}deg)`,
-            transformStyle: 'preserve-3d',
-          }}
-        >
-          {projects.map((p, i) => {
-            const rot = sliceAngle * i
-            const isActive = hovered === i
+      <div className="on-mc-layout">
+        {/* CHANNEL INDEX */}
+        <aside className="on-mc-channels">
+          <div className="on-mc-channels-head">CH · NAME · STATUS</div>
+          {projects.map((p, i) => (
+            <a
+              key={p.id}
+              ref={(el) => { channelRefs.current[i] = el }}
+              data-mc-kind="channel"
+              data-mc-idx={i}
+              href={p.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`on-mc-channel-row ${enteredChannels.has(i) ? 'in' : ''} ${active === i ? 'is-active' : ''}`}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+            >
+              <span className="on-mc-ch-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="on-mc-ch-name">{p.title}</span>
+              <span className={`on-mc-ch-status ${p.featured ? 'is-priority' : ''}`}>
+                {p.featured ? '● LIVE' : '○ STDBY'}
+              </span>
+            </a>
+          ))}
+          <div className="on-mc-channels-foot">
+            <div className="on-mc-signal">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <span key={i} style={{ height: `${i * 20}%` }} />
+              ))}
+            </div>
+            <span>SIGNAL · 100%</span>
+          </div>
+        </aside>
+
+        {/* MONITOR WALL */}
+        <div className="on-mc-wall">
+          {(projects as ProjectWithImage[]).map((p, i) => {
+            const isActive = active === i
             return (
               <a
                 key={p.id}
+                ref={(el) => { tileRefs.current[i] = el }}
+                data-mc-kind="tile"
+                data-mc-idx={i}
                 href={p.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`on-carousel-card ${isActive ? 'active' : ''} ${p.featured ? 'featured' : ''}`}
-                style={{
-                  transform: `rotateY(${rot}deg) translateZ(${radius}px)`,
-                }}
-                onMouseEnter={() => handleMouseEnter(i)}
-                onMouseLeave={handleMouseLeave}
+                className={`on-mc-tile ${enteredTiles.has(i) ? 'in' : ''} ${p.featured ? 'is-featured' : ''} ${isActive ? 'is-active' : ''}`}
+                onMouseEnter={() => setActive(i)}
+                onMouseLeave={() => setActive(null)}
               >
-                <div className="on-cc-index">
-                  {String(i + 1).padStart(2, '0')}
+                <div className="on-mc-screen">
+                  <div className="on-mc-screen-top">
+                    <span className="on-mc-rec">{p.featured ? '● REC' : '○ STDBY'}</span>
+                    <span className="on-mc-ch">CH{String(i + 1).padStart(2, '0')}</span>
+                  </div>
+
+                  <div className="on-mc-viz">
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} className="on-mc-shot" loading="lazy" />
+                    ) : (
+                      <Placeholder id={p.id} />
+                    )}
+                  </div>
+
+                  <div className="on-mc-screen-bot">
+                    <span>{p.year}</span>
+                    <span className="on-mc-noise">··· LIVE FEED</span>
+                  </div>
+                  <div className="on-mc-scanline" />
+                  <div className="on-mc-vignette" />
                 </div>
-                <div className="on-cc-title">{p.title}</div>
-                <div className="on-cc-desc">{p.shortDesc}</div>
-                <div className="on-cc-tags">
-                  {p.tags.slice(0, 3).map((t) => (
-                    <span key={t} className="on-cc-tag">{t}</span>
-                  ))}
+                <div className="on-mc-meta">
+                  <div className="on-mc-meta-top">
+                    <span className="on-mc-title">{p.title}</span>
+                    {p.featured && <span className="on-mc-priority-tag">PRIORITY</span>}
+                  </div>
+                  <p className="on-mc-desc">{p.shortDesc}</p>
+                  <div className="on-mc-tags">
+                    {p.tags.slice(0, 3).map((t) => (
+                      <span key={t} className="on-mc-tag">{t}</span>
+                    ))}
+                  </div>
+                  <div className="on-mc-foot">
+                    <span className="on-mc-arrow">VIEW SOURCE ↗</span>
+                  </div>
                 </div>
-                <div className="on-cc-footer">
-                  <span className="on-cc-year">{p.year}</span>
-                  <span className="on-cc-arrow">↗ GITHUB</span>
-                </div>
-                {p.featured && <div className="on-cc-featured-dot" />}
               </a>
             )
           })}

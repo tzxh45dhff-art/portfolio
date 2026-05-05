@@ -58,7 +58,7 @@ export const projects = [
     role: "Solo · Full Stack",
     liveUrl: "#",
     githubUrl: "https://github.com/tzxh45dhff-art/VERIFIAI",
-    featured: true,
+    featured: false,
   },
   {
     id: "synapse",
@@ -97,7 +97,7 @@ export const projects = [
     role: "Solo · AI Developer",
     liveUrl: "#",
     githubUrl: "https://github.com/tzxh45dhff-art/Apex",
-    featured: false,
+    featured: true,
   },
   {
     id: "the-unsaid-page",
@@ -110,7 +110,7 @@ export const projects = [
     role: "Solo · Frontend",
     liveUrl: "https://the-unsaid-page.vercel.app",
     githubUrl: "https://github.com/tzxh45dhff-art/The-unsaid-page",
-    featured: false,
+    featured: true,
   },
   {
     id: "mindpop",
@@ -123,7 +123,7 @@ export const projects = [
     role: "Solo · Frontend",
     liveUrl: "#",
     githubUrl: "https://github.com/tzxh45dhff-art/MindPop",
-    featured: false,
+    featured: true,
   },
   {
     id: "academic-dashboard",
@@ -167,7 +167,7 @@ export const certificates = [
     title: "Azure AI Fundamentals",
     code: "AI-900",
     issuer: "Microsoft",
-    year: "2024",
+    year: "2026",
     icon: "⬡",
     description:
       "Core AI concepts, machine learning, computer vision, NLP, and conversational AI workloads on Azure.",
@@ -180,7 +180,7 @@ export const certificates = [
     title: "Frontend Engineering",
     code: "META-FE",
     issuer: "Meta",
-    year: "2024",
+    year: "2026",
     icon: "◈",
     description:
       "Advanced React patterns, component architecture, testing strategies, and performance optimization.",
@@ -193,7 +193,7 @@ export const certificates = [
     title: "Python Professional",
     code: "PY-PRO",
     issuer: "Infosys Springboard",
-    year: "2024",
+    year: "2026",
     icon: "⬢",
     description:
       "Advanced Python programming — OOP, data structures, algorithms, and automation scripting.",
@@ -206,7 +206,7 @@ export const certificates = [
     title: "HTML5 Application Dev",
     code: "HTML5-DEV",
     issuer: "Infosys Springboard",
-    year: "2023",
+    year: "2026",
     icon: "◇",
     description:
       "Semantic HTML5, Canvas API, Web Storage, responsive design patterns, and accessibility standards.",
@@ -232,7 +232,7 @@ export const certificates = [
     title: "AI for Disaster Management",
     code: "DIS-AI",
     issuer: "Coursera",
-    year: "2024",
+    year: "2026",
     icon: "◈",
     description:
       "Applying AI/ML techniques to disaster prediction, emergency response optimization, and crisis analytics.",

@@ -2,48 +2,14 @@ import { useRef, useEffect, useState } from 'react'
 import { motion, useMotionValue, useScroll, useSpring } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
 
-const highlighted = [
-  {
-    id: 'synapse',
-    title: 'SYNAPSE',
-    shortDesc: 'Cross-platform learning & social hub — live voice rooms, multiplayer trivia, agentic AI chat, and a deep-focus study bunker.',
-    context: 'Built for ultra-low latency real-time communication with seamless AI integration. The bunker mode uses spaced-repetition algorithms to optimize flashcard study sessions, while the social layer supports concurrent voice channels and live quiz competitions.',
-    tags: ['REACT', 'CAPACITOR', 'FIREBASE', 'AGENTIC AI'],
-    year: '2025',
-    githubUrl: 'https://github.com/tzxh45dhff-art/synapse',
-    liveUrl: '#',
-  },
-  {
-    id: 'kinetic-city',
-    title: 'KINETIC CITY',
-    shortDesc: 'Full-stack fintech platform — market simulators, crash timelines, algorithmic insights, and inclusive financial planning.',
-    context: 'Engineered to demystify market dynamics with a robust FastAPI backend powering real-time data pipelines. Features historical crash replay, Monte Carlo portfolio simulations, and dedicated modules for women\'s financial independence and career trajectory modeling.',
-    tags: ['REACT', 'FASTAPI', 'PYTHON', 'DATA VIZ', 'FINTECH'],
-    year: '2026',
-    githubUrl: 'https://github.com/khushibagga20/kinetic-city',
-    liveUrl: '#',
-  },
-  {
-    id: 'apex',
-    title: 'APEX',
-    shortDesc: 'Proactive macOS AI agent — continuous awareness, local + cloud LLMs, voice/vision, and desktop automation.',
-    context: 'Optimized for Apple Silicon, APEX bridges on-device inference with Claude and Gemini for zero-latency desktop control. Driven by a custom SOUL.md configuration framework that manages long-term memory, real-time screen understanding, and proactive task execution.',
-    tags: ['PYTHON', 'LOCAL LLMS', 'COMPUTER VISION', 'MACOS'],
-    year: '2025',
-    githubUrl: 'https://github.com/tzxh45dhff-art/apex',
-    liveUrl: '#',
-  },
-  {
-    id: 'unsaid-page',
-    title: 'THE UNSAID PAGE',
-    shortDesc: 'Literary sanctuary — tactile page-flip reader, ambient audio, AI-curated prompts, and a digital penpal community.',
-    context: 'A full-stack creative platform designed to feel like a digital Studio Ghibli world. Features Groq-powered AI writing assistance, a rich-text editor with mood-based ambient soundscapes, and a community layer for sharing stories, archiving poems, and connecting through quiet, intentional correspondence.',
-    tags: ['REACT', 'SUPABASE', 'UI/UX', 'GROQ AI'],
-    year: '2025',
-    githubUrl: 'https://github.com/tzxh45dhff-art/the-unsaid-page',
-    liveUrl: '#',
-  },
-]
+import { projects } from '../data'
+
+const highlighted = projects
+  .filter(p => p.featured)
+  .map(p => ({
+    ...p,
+    context: p.fullDesc
+  }))
 
 // Lerp between two RGB colors
 function lerpRGB(a: number[], b: number[], t: number) {
