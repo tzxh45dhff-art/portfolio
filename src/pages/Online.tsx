@@ -1,26 +1,24 @@
 import { useEffect } from 'react'
 import OnlineBackground from '../components/online/OnlineBackground'
 import OnlineHero from '../components/online/OnlineHero'
-import OnlineDashboard from '../components/online/OnlineDashboard'
-import OnlineStack from '../components/online/OnlineStack'
-import OnlineProjects from '../components/online/OnlineProjects'
-import OnlineCommits from '../components/online/OnlineCommits'
+import OnlineDeployments from '../components/online/OnlineDeployments'
+import OnlineActivity from '../components/online/OnlineActivity'
+import OnlineSystems from '../components/online/OnlineSystems'
 import OnlineFooter from '../components/online/OnlineFooter'
 
 export default function Online() {
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   return (
     <div className="online-root">
       <OnlineBackground />
-      <OnlineHero />
-      <OnlineDashboard />
-      <OnlineStack />
-      <OnlineProjects />
-      <OnlineCommits />
-      <OnlineFooter />
+      <main className="on-page">
+        <OnlineHero />
+        <OnlineDeployments />
+        <OnlineActivity />
+        <OnlineSystems />
+        <OnlineFooter />
+      </main>
     </div>
   )
 }
