@@ -19,21 +19,14 @@
   gap: 3rem;
 }
 
-.initials-container {
-  display: flex;
-  gap: 0.5rem;
-  perspective: 1000px;
-}
-
-.initial-letter {
+.preloader-initials {
   font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(6rem, 15vw, 12rem);
-  line-height: 0.8;
-  color: var(--ink); /* Dark color for contrast against neon */
+  line-height: 0.85;
+  color: var(--ink);
   text-transform: uppercase;
-  display: inline-block;
-  transform-style: preserve-3d;
+  letter-spacing: -0.02em;
 }
 
 /* Load Button */

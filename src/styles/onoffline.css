@@ -66,21 +66,20 @@
 /* ── Center typography ─────────────────────────── */
 .ool-center {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
   z-index: 3;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  pointer-events: none;
 }
 
 .ool-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
+  pointer-events: auto;
 }
 
 .ool-title-stack {
@@ -167,16 +166,9 @@
   height: 100%;
   overflow: hidden;
   border-radius: 6px;
-  box-shadow:
-    0 0 80px rgba(200, 247, 62, 0.15),
-    0 0 200px rgba(200, 247, 62, 0.06);
-  transition: box-shadow 0.5s ease;
+  transition: transform 0.5s ease;
 }
-.ool-panel:hover {
-  box-shadow:
-    0 0 120px rgba(200, 247, 62, 0.28),
-    0 0 240px rgba(200, 247, 62, 0.10);
-}
+.ool-panel:hover { transform: scale(1.01); }
 
 .ool-panel-img {
   width: 100%;
@@ -185,6 +177,14 @@
   object-position: center;
   display: block;
 }
+/* Subtle scrim so the serif headline reads on top of the photo */
+.ool-panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+}
+.ool-panel { position: relative; }
 
 /* ── Placeholder (when no image) ───────────────── */
 .ool-placeholder {
@@ -233,11 +233,51 @@
   mix-blend-mode: screen;
 }
 
-.ool-fade-left {
-  background: linear-gradient(to right, transparent 60%, #EDEBE5 100%);
+.ool-fade-left,
+.ool-fade-right { display: none; }
+
+/* ── Center guidance (between the two image panels) ── */
+.ool-guide {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px;
+  pointer-events: none;
+  width: clamp(200px, 22vw, 280px);
+  text-align: center;
 }
-.ool-fade-right {
-  background: linear-gradient(to left, transparent 60%, #EDEBE5 100%);
+.ool-guide-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(200, 247, 62, 0.55), transparent);
+}
+.ool-guide-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.ool-guide-headline {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  color: rgba(242, 237, 228, 0.92);
+  line-height: 1.25;
+  letter-spacing: 0.005em;
+}
+.ool-guide-headline em {
+  font-style: italic;
+  color: var(--lime);
+  font-weight: 400;
+}
+.ool-guide-sub {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(242, 237, 228, 0.55);
+  font-style: italic;
 }
 
 /* ── Mobile ────────────────────────────────────── */

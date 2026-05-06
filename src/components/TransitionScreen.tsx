@@ -32,38 +32,13 @@ export default function TransitionScreen() {
           transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className="neon-preloader-content">
-            <motion.div 
-              className="initials-container"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.3, delayChildren: 0.5 }
-                }
-              }}
+            <motion.div
+              className="preloader-initials"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <motion.span 
-                className="initial-letter"
-                variants={{
-                  hidden: { opacity: 0, y: 50, rotateX: -90 },
-                  visible: { opacity: 1, y: 0, rotateX: 0 }
-                }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                J
-              </motion.span>
-              <motion.span 
-                className="initial-letter"
-                variants={{
-                  hidden: { opacity: 0, y: 50, rotateX: -90 },
-                  visible: { opacity: 1, y: 0, rotateX: 0 }
-                }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                G
-              </motion.span>
+              JG
             </motion.div>
           </div>
         </motion.div>

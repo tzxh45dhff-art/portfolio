@@ -1,5 +1,5 @@
 export const personal = {
-  name: "Jais Singh",
+  name: "Jaisgurnoor Singh",
   firstName: "JAIS",
   lastName: "SINGH",
   monogram: "JS",

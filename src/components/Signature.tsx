@@ -60,10 +60,6 @@ export default function Signature({ progress }: Props) {
 
   return (
     <div className="signature-wrap">
-      <div className="tech-label">
-        <span>Message from</span>
-        <strong>JAIS</strong>
-      </div>
       <svg viewBox="0 0 660 300" fill="none" className="signature-svg">
         <g ref={groupRef}>
           {SEGS.map((d, i) => (

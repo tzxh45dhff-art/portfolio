@@ -13,10 +13,10 @@ export default function OnOffLine() {
     target: sectionRef,
     offset: ['start end', 'center center'],
   })
-  const bg = useTransform(scrollYProgress, [0, 0.4, 1], ['#373E26', '#454C34', '#EDEBE5'])
-  const textColor = useTransform(scrollYProgress, [0, 0.5, 1], ['#F2EDE4', '#F2EDE4', '#0A0A0A'])
-  const descColor = useTransform(scrollYProgress, [0, 0.5, 1], ['rgba(242,237,228,0.5)', 'rgba(242,237,228,0.5)', '#555'])
-  const topoOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [0, 0, 0.7])
+  const bg = useTransform(scrollYProgress, [0, 0.4, 1], ['#373E26', '#454C34', '#2C321E'])
+  const textColor = useTransform(scrollYProgress, [0, 1], ['#F2EDE4', '#F2EDE4'])
+  const descColor = useTransform(scrollYProgress, [0, 1], ['rgba(242,237,228,0.7)', 'rgba(242,237,228,0.75)'])
+  const topoOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [0, 0.15, 0.25])
 
   return (
     <motion.section
@@ -103,6 +103,17 @@ export default function OnOffLine() {
         </motion.div>
       </div>
 
+      {/* Center guidance — sits in the gap between the two image panels */}
+      <div className="ool-guide" aria-hidden>
+        <span className="ool-guide-line" />
+        <span className="ool-guide-eyebrow">Pick a side</span>
+        <span className="ool-guide-headline">
+          <em>Click</em> either panel
+        </span>
+        <span className="ool-guide-sub">to step into that world</span>
+        <span className="ool-guide-line" />
+      </div>
+
       {/* Center typography — absolutely centered */}
       <div className="ool-center">
         <div className="ool-col">
@@ -115,7 +126,7 @@ export default function OnOffLine() {
           </motion.p>
           <TransitionLink to="/online" className="ool-arrow-btn" aria-label="View Online">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 15L15 5M15 5H7M15 5V13" stroke="#0A0A0A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M15 15L5 5M5 5H13M5 5V13" stroke="#0A0A0A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </TransitionLink>
         </div>

@@ -40,6 +40,113 @@
   justify-content: space-between;
   padding: 28px 36px 0;
 }
+/* Fixed variant — pinned to viewport so it doesn't shrink with the scaled hero */
+.hero-nav-fixed {
+  position: fixed;
+  pointer-events: auto;
+  transition: color 0.4s ease;
+}
+.hero-nav-fixed .nav-name,
+.hero-nav-fixed .nav-right > * {
+  pointer-events: auto;
+}
+.hero-nav-fixed .nav-name { transition: color 0.4s ease; }
+
+/* Dark mode — when scrolled past hero into the dark olive sections */
+.hero-nav-fixed.is-dark .nav-name { color: #EDEBE5; }
+.hero-nav-fixed.is-dark .btn-sq {
+  border-color: rgba(237, 235, 229, 0.3);
+  color: #EDEBE5;
+}
+.hero-nav-fixed.is-dark .btn-sq:hover {
+  background: rgba(237, 235, 229, 0.08);
+  border-color: rgba(237, 235, 229, 0.5);
+}
+
+/* Lando-style nav: stacked logo on left, lime CTA + square menu on right */
+.hero-nav-fixed { padding: 24px 32px 0; align-items: center; }
+
+.nav-logo {
+  display: flex; flex-direction: column;
+  line-height: 0.85;
+  color: var(--h-ink);
+  transition: color 0.4s ease;
+}
+.nav-logo-top {
+  font-family: var(--f-serif);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.4rem, 1.8vw, 1.7rem);
+  letter-spacing: 0.01em;
+}
+.nav-logo-bot {
+  font-family: var(--f-ui);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 2vw, 1.85rem);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.nav-actions {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--f-ui); font-weight: 800;
+  font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--h-lime); color: var(--h-ink);
+  padding: 13px 22px;
+  border: 2px solid #0F0F0F; border-radius: 12px;
+  text-decoration: none;
+  transition: background .25s ease, padding .35s ease, font-size .35s ease, border-color .35s ease, border-width .35s ease, transform .15s, box-shadow .35s ease;
+  white-space: nowrap;
+}
+.nav-cta svg { width: 15px; height: 15px; }
+
+/* Dark mode (post-hero): shrink slightly and drop the border */
+.hero-nav-fixed.is-dark .nav-cta {
+  padding: 10px 16px;
+  font-size: 0.7rem;
+  border-color: transparent;
+}
+.hero-nav-fixed.is-dark .nav-cta svg { width: 14px; height: 14px; }
+.nav-cta:hover { background: var(--h-lime-dk); transform: translateY(-1px); }
+.nav-cta svg { display: block; }
+
+/* Solid neon variant — saturated lime with glow */
+.nav-cta-neon {
+  background: #C8F73E;
+  color: #0F0F0F;
+  box-shadow:
+    0 0 0 1px rgba(200, 247, 62, 0.6),
+    0 0 18px rgba(200, 247, 62, 0.55),
+    0 8px 24px rgba(200, 247, 62, 0.35);
+}
+.nav-cta-neon:hover {
+  background: #D4FF45;
+  box-shadow:
+    0 0 0 1px rgba(200, 247, 62, 0.8),
+    0 0 26px rgba(200, 247, 62, 0.75),
+    0 10px 28px rgba(200, 247, 62, 0.5);
+}
+
+.nav-menu-sq {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  background: #FFFFFF; color: var(--h-ink);
+  border: none; border-radius: 12px;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.nav-menu-sq:hover { background: #F2F2F0; }
+
+/* Dark mode adjustments */
+.hero-nav-fixed.is-dark .nav-logo { color: #EDEBE5; }
+.hero-nav-fixed.is-dark .nav-menu-sq {
+  background: rgba(237, 235, 229, 0.95);
+  color: var(--h-ink);
+}
 .nav-name {
   font-family: var(--f-serif);
   font-weight: 900;
@@ -67,37 +174,54 @@
   font-family: var(--f-ui); font-weight: 700;
   font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
   background: var(--h-lime); color: var(--h-ink);
-  padding: 11px 20px;
-  border: none; border-radius: 2px;
+  padding: 12px 22px;
+  border: none; border-radius: 999px;
   text-decoration: none;
-  transition: background .2s, transform .15s;
+  box-shadow: 0 0 0 1px rgba(200,247,62,0.25), 0 8px 24px rgba(200,247,62,0.35);
+  transition: background .2s, transform .15s, box-shadow .25s;
   white-space: nowrap;
 }
-.btn-lime:hover { background: var(--h-lime-dk); transform: scale(.97); }
+.btn-lime:hover {
+  background: var(--h-lime-dk); transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(200,247,62,0.4), 0 12px 32px rgba(200,247,62,0.5);
+}
 
 .btn-outline {
   display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--f-ui); font-weight: 700;
   font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
   background: transparent; color: var(--h-ink);
-  padding: 11px 20px;
-  border: 1.5px solid var(--h-border); border-radius: 2px;
+  padding: 12px 22px;
+  border: 1.5px solid var(--h-border); border-radius: 999px;
   text-decoration: none;
   transition: background .2s, border-color .2s, transform .15s;
   white-space: nowrap;
 }
-.btn-outline:hover { background: rgba(15,15,15,.06); border-color: rgba(15,15,15,.2); }
+.btn-outline:hover { background: rgba(15,15,15,.06); border-color: rgba(15,15,15,.25); }
 
 .btn-sq {
   width: 42px; height: 42px;
   border: 1.5px solid var(--h-border);
-  background: none; border-radius: 2px;
+  background: none; border-radius: 999px;
   display: flex; align-items: center; justify-content: center;
   color: var(--h-ink);
   transition: background .2s, border-color .2s;
   flex-shrink: 0;
 }
-.btn-sq:hover { background: rgba(15,15,15,.06); border-color: rgba(15,15,15,.2); }
+.btn-sq:hover { background: rgba(15,15,15,.06); border-color: rgba(15,15,15,.25); }
+
+/* JS monogram top-center inside hero (scrolls with hero) */
+.hero-mono-top {
+  position: absolute;
+  top: 28px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: var(--f-ui); font-weight: 700;
+  font-size: 1.35rem; letter-spacing: .18em;
+  color: var(--h-ink);
+  pointer-events: none;
+  animation: fadeUp .7s var(--h-expo) .5s both;
+}
 
 /* ── PORTRAIT ── */
 .hero-portrait-wrap {
@@ -105,8 +229,8 @@
   bottom: 0; left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: clamp(300px, 46vw, 700px);
-  height: 100%;
+  width: clamp(260px, 38vw, 600px);
+  height: 86%;
   display: flex; align-items: flex-end; justify-content: center;
   pointer-events: none;
   animation: portraitIn 1.1s var(--h-expo) .2s both;

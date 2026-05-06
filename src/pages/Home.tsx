@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import Hero from '../components/Hero'
+import HeroNav from '../components/HeroNav'
 import DarkBg from '../components/DarkBg'
 import Signature from '../components/Signature'
 import AboutText from '../components/AboutText'
@@ -48,6 +49,9 @@ export default function Home() {
   return (
     <>
       <motion.div className="scroll-progress" style={{ scaleX: barScale, width: '100%' }} />
+
+      {/* Fixed nav — outside scaled scene so it doesn't shrink with the hero */}
+      <HeroNav />
 
       <div style={{ height: '400vh', pointerEvents: 'none' }} aria-hidden />
 

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion, MotionValue, useTransform } from 'framer-motion'
-import TransitionLink from './TransitionLink'
 import { personal } from '../data'
 import ContourCanvas from './ContourCanvas'
 
@@ -13,6 +12,11 @@ export default function Hero({ progress }: Props) {
   return (
     <section className="hero hero-light">
       <ContourCanvas count={7} speed={1} />
+
+      {/* JS monogram — sits inside hero so it shrinks/scrolls away with it */}
+      <motion.div className="hero-mono-top" style={{ opacity: uiOpacity }}>
+        {personal.monogram}
+      </motion.div>
 
       {/* Portrait */}
       <div className="hero-portrait-wrap">
@@ -30,27 +34,6 @@ export default function Hero({ progress }: Props) {
           </div>
         )}
       </div>
-
-      {/* Nav */}
-      <motion.nav className="hero-nav-light" style={{ opacity: uiOpacity }}>
-        <div className="nav-name">
-          <span>{personal.firstName.charAt(0) + personal.firstName.slice(1).toLowerCase()}</span>
-          <span>{personal.lastName.charAt(0) + personal.lastName.slice(1).toLowerCase()}</span>
-        </div>
-
-        <div className="nav-mono">{personal.monogram}</div>
-
-        <div className="nav-right">
-          <TransitionLink to="/contact" className="btn-lime">CONTACT</TransitionLink>
-          <a href={personal.resumeUrl} download className="btn-outline">DOWNLOAD RESUME</a>
-          <button className="btn-sq" aria-label="Menu">
-            <svg width="15" height="10" viewBox="0 0 15 10" fill="none">
-              <line x1="0" y1="1" x2="15" y2="1" stroke="currentColor" strokeWidth="1.5"/>
-              <line x1="0" y1="9" x2="15" y2="9" stroke="currentColor" strokeWidth="1.5"/>
-            </svg>
-          </button>
-        </div>
-      </motion.nav>
 
       {/* Info cards bottom-left */}
       <motion.div className="info-cards" style={{ opacity: uiOpacity }}>
