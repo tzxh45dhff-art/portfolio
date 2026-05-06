@@ -1,85 +1,130 @@
 import { useEffect, useRef, useState } from 'react'
 
 const SECTIONS = [
-  '01 / HERO',
-  '02 / PROJECTS',
-  '03 / STACK',
-  '04 / COMMITS',
-  '05 / CTA',
+  { id: 'hero',     label: 'IDENTITY' },
+  { id: 'deploy',   label: 'DEPLOYMENTS' },
+  { id: 'activity', label: 'ACTIVITY' },
+  { id: 'systems',  label: 'SYSTEMS' },
+  { id: 'exit',     label: 'EXIT' },
 ]
+
+function pad(n: number, w = 2) { return String(n).padStart(w, '0') }
 
 export default function OnlineBackground() {
   const fillRef = useRef<HTMLDivElement>(null)
-  const auroraARef = useRef<HTMLDivElement>(null)
-  const auroraBRef = useRef<HTMLDivElement>(null)
-  const auroraCRef = useRef<HTMLDivElement>(null)
-  const [labelIdx, setLabelIdx] = useState(0)
-  const [uptime, setUptime] = useState('UPTIME: 00:00:00:000')
+  const [active, setActive] = useState(0)
+  const [clock, setClock] = useState('')
+  const [uptime, setUptime] = useState('00:00:00')
+
+  useEffect(() => {
+    const start = Date.now()
+    const tick = () => {
+      const now = new Date()
+      setClock(`${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}:${pad(now.getUTCSeconds())} UTC`)
+      const e = Date.now() - start
+      const s = Math.floor(e / 1000) % 60
+      const m = Math.floor(e / 60000) % 60
+      const h = Math.floor(e / 3600000)
+      setUptime(`${pad(h)}:${pad(m)}:${pad(s)}`)
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
 
   useEffect(() => {
     const onScroll = () => {
-      const scrollY = window.scrollY
-      const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight)
-      const progress = Math.min(1, scrollY / maxScroll)
-
-      if (fillRef.current) fillRef.current.style.transform = `scaleY(${progress})`
-
-      if (auroraARef.current) auroraARef.current.style.transform = `translate3d(${-15 + progress * 25}vw, ${-10 + progress * 60}vh, 0)`
-      if (auroraBRef.current) auroraBRef.current.style.transform = `translate3d(${60 - progress * 30}vw, ${20 + progress * 50}vh, 0)`
-      if (auroraCRef.current) auroraCRef.current.style.transform = `translate3d(${10 + progress * 20}vw, ${70 - progress * 40}vh, 0)`
+      const max = Math.max(1, document.body.scrollHeight - window.innerHeight)
+      const p = Math.min(1, window.scrollY / max)
+      if (fillRef.current) fillRef.current.style.transform = `scaleY(${p})`
 
       const sections = document.querySelectorAll<HTMLElement>('[data-on-section]')
-      let active = 0
+      let idx = 0
       sections.forEach((sec) => {
-        const top = sec.getBoundingClientRect().top + scrollY
-        if (scrollY >= top - window.innerHeight * 0.5) {
-          active = parseInt(sec.dataset.onSection || '0', 10)
+        const top = sec.getBoundingClientRect().top
+        if (top < window.innerHeight * 0.45) {
+          idx = parseInt(sec.dataset.onSection || '0', 10)
         }
       })
-      setLabelIdx(active)
+      setActive(idx)
     }
-
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    const start = Date.now()
-    const tick = () => {
-      const e = Date.now() - start
-      const ms = e % 1000
-      const s = Math.floor(e / 1000) % 60
-      const m = Math.floor(e / 60000) % 60
-      const h = Math.floor(e / 3600000)
-      setUptime(
-        'UPTIME: ' +
-          String(h).padStart(2, '0') + ':' +
-          String(m).padStart(2, '0') + ':' +
-          String(s).padStart(2, '0') + ':' +
-          String(ms).padStart(3, '0')
-      )
-    }
-    tick()
-    const id = setInterval(tick, 60)
-    return () => clearInterval(id)
-  }, [])
+  const goTo = (id: string) => {
+    const target = document.querySelector<HTMLElement>(`[data-on-id="${id}"]`)
+    if (target) window.scrollTo({ top: target.offsetTop - 36, behavior: 'smooth' })
+  }
 
   return (
     <>
-      <div className="on-bg-aurora">
-        <div ref={auroraARef} className="on-aurora on-aurora-a" />
-        <div ref={auroraBRef} className="on-aurora on-aurora-b" />
-        <div ref={auroraCRef} className="on-aurora on-aurora-c" />
+      <div className="on-bg">
+        <div className="on-bg-aurora" />
+        <div className="on-bg-grid" />
+        <div className="on-bg-noise" />
       </div>
-      <div className="on-bg-grid" />
-      <div className="on-bg-vignette" />
-      <div className="on-scanline" />
-      <div className="on-progress-rail">
+
+      <div className="on-topbar">
+        <div className="on-topbar-left">
+          <span className="on-tb-dot" />
+          <span className="on-tb-val">JAIS·OS</span>
+          <span className="on-tb-sep" />
+          <span className="on-tb-key">v.0.4.7</span>
+          <span className="on-tb-sep" />
+          <span className="on-tb-key">NODE</span>
+          <span className="on-tb-mono">JLD-01</span>
+        </div>
+        <div className="on-topbar-center">
+          <span className="on-tb-key">SESSION</span>
+          <span className="on-tb-mono">{clock}</span>
+        </div>
+        <div className="on-topbar-right">
+          <span className="on-tb-key">STATUS</span>
+          <span className="on-tb-accent">OPERATIONAL</span>
+          <span className="on-tb-sep" />
+          <span className="on-tb-key">CPU</span>
+          <span className="on-tb-mono">31%</span>
+          <span className="on-tb-sep" />
+          <span className="on-tb-key">MEM</span>
+          <span className="on-tb-mono">2.1G</span>
+        </div>
+      </div>
+
+      <nav className="on-rail" aria-label="Sections">
+        {SECTIONS.map((s, i) => (
+          <button
+            key={s.id}
+            className={`on-rail-item ${active === i ? 'is-active' : ''}`}
+            onClick={() => goTo(s.id)}
+          >
+            <span className="on-rail-tick" />
+            <span className="on-rail-label">{pad(i + 1)} · {s.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      <div className="on-progress">
         <div ref={fillRef} className="on-progress-fill" />
       </div>
-      <div className="on-uptime">{uptime}</div>
-      <div className="on-sec-counter">{SECTIONS[labelIdx] ?? SECTIONS[0]}</div>
+
+      <div className="on-statusbar">
+        <div className="on-sb-group">
+          <span className="on-sb-tag">SECTION</span>
+          <span>{pad(active + 1)} / {pad(SECTIONS.length)}</span>
+          <span>·</span>
+          <span>{SECTIONS[active]?.label}</span>
+        </div>
+        <div className="on-sb-group">
+          <span>UP</span>
+          <span className="on-sb-uptime">{uptime}</span>
+          <span>·</span>
+          <span>SIGNAL 100%</span>
+          <span>·</span>
+          <span>LAT 12ms</span>
+        </div>
+      </div>
     </>
   )
 }
