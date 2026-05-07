@@ -24,7 +24,7 @@ export const currentStatus = {
   project: "KINETIC",
   detail: "Shipping AI mentor flow",
   label: "CURRENTLY BUILDING",
-  since: "BUILDING WITH AI SINCE 2024",
+  since: "BUILDING WITH AI SINCE 2025",
 };
 
 export const stats = [
@@ -219,7 +219,7 @@ export const certificates = [
     title: "AI Foundations",
     code: "IBM-AI",
     issuer: "IBM",
-    year: "2024",
+    year: "2025",
     icon: "⬡",
     description:
       "Fundamentals of artificial intelligence, neural networks, deep learning, and ethical AI practices.",

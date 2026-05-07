@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { personal } from '../../data'
 
 const GH = (personal.socials.github.match(/github\.com\/([^/?#]+)/i)?.[1] || '').trim()

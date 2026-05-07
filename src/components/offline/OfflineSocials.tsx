@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 const CARDS = [
-  { code: 'IG', label: 'Instagram', href: 'https://www.instagram.com/jais_132/', img: '/assets/social-ig.jpg' },
-  { code: 'GH', label: 'GitHub', href: 'https://github.com/tzxh45dhff-art', img: 'https://github.com/tzxh45dhff-art.png' },
-  { code: 'LI', label: 'LinkedIn', href: 'https://linkedin.com/in/jaisgurnoor-singh-1477ba391', img: '/assets/social-li.jpg' },
-  { code: 'TW', label: 'Twitter', href: 'https://x.com/JaisgurnoorS', img: '/assets/social-tw.jpg' },
+  { code: 'IG', label: 'Instagram', handle: '@jais_132',          href: 'https://www.instagram.com/jais_132/',                  img: '/assets/social-ig.jpg' },
+  { code: 'GH', label: 'GitHub',    handle: '@tzxh45dhff-art',    href: 'https://github.com/tzxh45dhff-art',                    img: 'https://github.com/tzxh45dhff-art.png' },
+  { code: 'LI', label: 'LinkedIn',  handle: 'Jaisgurnoor Singh',  href: 'https://linkedin.com/in/jaisgurnoor-singh-1477ba391',  img: '/assets/social-li.jpg' },
+  { code: 'TW', label: 'Twitter',   handle: '@JaisgurnoorS',      href: 'https://x.com/JaisgurnoorS',                            img: '/assets/social-tw.jpg' },
 ]
 
 export default function OfflineSocials() {
@@ -22,9 +22,11 @@ export default function OfflineSocials() {
           if (e.isIntersecting) e.target.classList.add('in-view')
         })
       },
-      { threshold: 0.15, rootMargin: '-60px' }
+      { threshold: 0.18, rootMargin: '-80px' }
     )
-    root.querySelectorAll('.off-section-header, .off-section-hr').forEach((el) => headerIO.observe(el))
+    root.querySelectorAll('.off-section-header, .off-section-hr, .off-social-card').forEach((el) =>
+      headerIO.observe(el)
+    )
 
     const linkIO = new IntersectionObserver(
       (entries) => {
@@ -49,17 +51,19 @@ export default function OfflineSocials() {
 
         const onMove = (e: MouseEvent) => {
           const rect = card.getBoundingClientRect()
-          tx = (e.clientX - (rect.left + rect.width / 2)) * 0.18
-          ty = (e.clientY - (rect.top + rect.height / 2)) * 0.18
+          // Heavier, more restrained magnetism (0.18 → 0.06)
+          tx = (e.clientX - (rect.left + rect.width / 2)) * 0.06
+          ty = (e.clientY - (rect.top + rect.height / 2)) * 0.06
         }
         const onLeave = () => {
           tx = 0
           ty = 0
         }
         const spring = () => {
-          vx += (tx - vx) * 0.15
-          vy += (ty - vy) * 0.15
-          card.style.transform = `translate(${vx}px,${vy}px) scale(${Math.abs(vx) + Math.abs(vy) > 1 ? 1.03 : 1})`
+          // Slower spring constant — feels weighted
+          vx += (tx - vx) * 0.07
+          vy += (ty - vy) * 0.07
+          card.style.transform = `translate3d(${vx.toFixed(2)}px,${vy.toFixed(2)}px,0)`
           raf = requestAnimationFrame(spring)
         }
         card.addEventListener('mousemove', onMove)
@@ -83,28 +87,42 @@ export default function OfflineSocials() {
   return (
     <div ref={rootRef} className="off-socials-section" data-off-section="4">
       <div className="off-section-header">
-        <span className="off-section-header-left">What&apos;s up</span>
-        <span className="off-section-header-right">On Socials</span>
+        <span className="off-section-header-eyebrow">V — Outwards</span>
+        <span className="off-section-header-title">Where to find the rest</span>
+        <span className="off-section-header-sub">Quiet channels. Long-form attention.</span>
       </div>
       <div className="off-section-hr" />
 
       <div className="off-socials-grid">
-        {CARDS.map((c) => (
-          <a key={c.code} href={c.href} target="_blank" rel="noopener noreferrer" className="off-social-card">
-            <div className="off-social-card-inner">
+        {CARDS.map((c, i) => (
+          <a
+            key={c.code}
+            href={c.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="off-social-card"
+          >
+            <div className="off-social-card-frame">
               <img src={c.img} alt={c.label} className="off-social-card-img" />
-              <div className="off-social-caption">
-                <span>{c.label}</span>
-                <span>↗</span>
+              <div className="off-social-card-shade" />
+              <div className="off-social-card-meta">
+                <span className="off-social-card-num">0{i + 1}</span>
+                <span className="off-social-card-label">{c.label}</span>
+              </div>
+              <div className="off-social-card-hover">
+                <span className="off-social-card-handle">{c.handle}</span>
+                <span className="off-social-card-arrow">↗</span>
               </div>
             </div>
           </a>
         ))}
       </div>
+
       <div ref={linksRef} className="off-social-links">
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="off-social-link">GitHub ↗</a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="off-social-link">LinkedIn ↗</a>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="off-social-link">Twitter ↗</a>
+        <a href="https://github.com/tzxh45dhff-art" target="_blank" rel="noopener noreferrer" className="off-social-link">GitHub</a>
+        <a href="https://linkedin.com/in/jaisgurnoor-singh-1477ba391" target="_blank" rel="noopener noreferrer" className="off-social-link">LinkedIn</a>
+        <a href="https://x.com/JaisgurnoorS" target="_blank" rel="noopener noreferrer" className="off-social-link">Twitter</a>
+        <a href="mailto:jaissingh783@gmail.com" className="off-social-link">Email</a>
       </div>
     </div>
   )
