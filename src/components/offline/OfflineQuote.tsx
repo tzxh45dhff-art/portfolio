@@ -36,7 +36,7 @@ export default function OfflineQuote() {
         // Soft per-word easing window so they fade rather than snap
         const localP = clamp((reveal - threshold) / (1 / total + 0.02), 0, 1)
         const e = easeOut(localP)
-        w.style.color = `rgba(26, 20, 14, ${0.16 + e * 0.78})`
+        w.style.color = `rgba(244, 239, 229, ${0.30 + e * 0.70})`
       })
       rule.style.transform = `scaleX(${easeOut(clamp((p - 0.02) / 0.25, 0, 1))})`
       attr.style.opacity = String(easeOut(clamp((p - 0.7) / 0.18, 0, 1)))
