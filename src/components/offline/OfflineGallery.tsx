@@ -1,14 +1,21 @@
 import { useEffect, useRef } from 'react'
 
+/*
+ * Four frames, because four is what actually exists.
+ *
+ * This list previously referenced /assets/gallery1..8.jpg — six of those files
+ * do not exist (404) and gallery1.jpg was a 69MB TIFF mislabelled .jpg, which
+ * no browser can decode. So the gallery was mostly broken images.
+ *
+ * Captions now describe what is genuinely in each frame rather than asserting
+ * a city. The originals claimed Chandigarh / Delhi / Mumbai / Manali /
+ * Amritsar / Shimla, which the photographs do not show.
+ */
 const CARDS = [
-  { w: 380, h: 560, n: '01', loc: 'Chandigarh', year: '2024', img: '/assets/gallery1.jpg' },
-  { w: 320, h: 380, n: '02', loc: 'Delhi', year: '2024', img: '/assets/gallery2.jpg' },
-  { w: 460, h: 560, n: '03', loc: 'Mumbai', year: '2023', img: '/assets/gallery3.jpg' },
-  { w: 320, h: 380, n: '04', loc: 'Manali', year: '2024', img: '/assets/gallery4.jpg' },
-  { w: 400, h: 560, n: '05', loc: 'Amritsar', year: '2023', img: '/assets/gallery5.jpg' },
-  { w: 340, h: 380, n: '06', loc: 'Shimla', year: '2024', img: '/assets/gallery6.jpg' },
-  { w: 440, h: 560, n: '07', loc: 'Jalandhar', year: '2025', img: '/assets/gallery7.jpg' },
-  { w: 360, h: 380, n: '08', loc: 'Online', year: '2025', img: '/assets/gallery8.jpg' },
+  { w: 440, h: 560, n: '01', loc: 'Volunteering', year: '2025', img: '/media/reel-1.jpg' },
+  { w: 320, h: 560, n: '02', loc: 'Courtside',    year: '2024', img: '/media/offline.jpg' },
+  { w: 420, h: 560, n: '03', loc: 'Off the clock', year: '2024', img: '/media/reel-3.jpg' },
+  { w: 300, h: 560, n: '04', loc: 'Field notes',  year: '2025', img: '/media/reel-2.jpg' },
 ]
 
 export default function OfflineGallery() {

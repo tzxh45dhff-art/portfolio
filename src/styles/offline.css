@@ -5,36 +5,42 @@
 ══════════════════════════════════════════════════════════ */
 
 .offline-root {
-  /* Deep indigo-violet base */
-  --paper:        #150d2e;
-  --paper-deep:   #0d0820;
-  --paper-warm:   #1c1040;
-  --ink:          #F4EFE8;
-  --ink-mid:      rgba(244, 239, 232, 0.75);
-  --ink-soft:     rgba(244, 239, 232, 0.45);
-  --ink-faint:    rgba(244, 239, 232, 0.18);
-  --rule:         rgba(244, 239, 232, 0.12);
-  --rule-strong:  rgba(244, 239, 232, 0.28);
+  /* Remapped onto tokens.css. Offline stays the DARK, warm counterpart to
+     Online rather than flipping to a light ground — every rule below was
+     authored for light-on-dark, and inverting the ground alone would leave
+     pale text on pale paper.
 
-  /* Warm accent for hover/highlight — complements the violet */
-  --ember:        #FF8A5C;
-  --ember-soft:   rgba(255, 138, 92, 0.65);
-  --ember-faint:  rgba(255, 138, 92, 0.14);
+     The private violet/ember palette and the Playfair serif are gone; the
+     accent is now the system lime and the display face is Barlow Condensed,
+     so this page reads as the same site as everything else. */
 
-  /* Surface */
-  --surface:      rgba(255, 248, 235, 0.10);
-  --surface-2:    rgba(255, 248, 235, 0.06);
+  --paper:        var(--olive);
+  --paper-deep:   var(--noir);
+  --paper-warm:   #31362a;
+  --ink:          var(--paper-ink);
+  --ink-mid:      var(--paper-dim);
+  --ink-soft:     var(--paper-faint);
+  --ink-faint:    rgba(244, 244, 237, 0.18);
+  --rule:         var(--rule-dark);
+  --rule-strong:  rgba(244, 244, 237, 0.28);
 
-  /* Easings — heavier, more cinematic */
-  --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-circ:    cubic-bezier(0.76, 0, 0.24, 1);
-  --ease-dolly:   cubic-bezier(0.22, 1, 0.36, 1);
+  /* Accent unified with the rest of the site. */
+  --ember:        var(--lime);
+  --ember-soft:   rgba(210, 255, 0, 0.65);
+  --ember-faint:  rgba(210, 255, 0, 0.14);
 
-  /* Editorial families */
+  --surface:      rgba(244, 244, 237, 0.10);
+  --surface-2:    rgba(244, 244, 237, 0.06);
+
+  --ease-expo:    var(--e-out);
+  --ease-circ:    var(--e-inout);
+  --ease-dolly:   var(--e-out);
+
   --f-display:    var(--font-display);
   --f-mono:       var(--font-mono);
   --f-body:       var(--font-body);
-  --f-serif:      'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  /* No serif anywhere on this site — the display face carries it. */
+  --f-serif:      var(--font-display);
 
   background: var(--paper);
   color: var(--ink);

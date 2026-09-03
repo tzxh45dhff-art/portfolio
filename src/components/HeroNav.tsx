@@ -10,7 +10,10 @@ export default function HeroNav() {
   useEffect(() => {
     const onScroll = () => {
       const threshold = window.innerHeight * 2.4
-      setDark(window.scrollY > threshold)
+      /* Guarded: this ran on every scroll tick and re-rendered the nav each
+         time, even though the boolean only flips twice per page. */
+      const next = window.scrollY > threshold
+      setDark((prev) => (prev === next ? prev : next))
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })

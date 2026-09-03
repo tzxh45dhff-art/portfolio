@@ -1,0 +1,351 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   TOKENS — single source of truth.
+   Never hardcode a value that a token below already covers.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Ground colours ─────────────────────────────────────────────── */
+  --paper:        #F4F4ED;
+  --paper-2:      #EAEAE0;
+  --olive:        #282C20;
+  --noir:         #111112;
+  --lime:         #D2FF00;
+
+  /* ── Ink on light grounds ───────────────────────────────────────── */
+  --ink:          #282C20;
+  --ink-dim:      rgba(40, 44, 32, 0.55);
+  --ink-faint:    rgba(40, 44, 32, 0.30);
+  --rule:         rgba(40, 44, 32, 0.14);
+
+  /* ── Ink on dark grounds ────────────────────────────────────────── */
+  --paper-ink:    #F4F4ED;
+  --paper-dim:    rgba(244, 244, 237, 0.55);
+  --paper-faint:  rgba(244, 244, 237, 0.28);
+  --rule-dark:    rgba(244, 244, 237, 0.14);
+
+  /* ── Typography — exactly three families, no serif, ever ────────── */
+  --f-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --f-ui:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono:    'Space Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── Modular type scale ─────────────────────────────────────────── */
+  --t-display-xl: clamp(4.5rem, 15vw, 15rem);
+  --t-display-lg: clamp(3.25rem, 9vw, 8.5rem);
+  --t-display-md: clamp(2.25rem, 5.5vw, 5rem);
+  --t-display-sm: clamp(1.75rem, 3.4vw, 3rem);
+  --t-body-lg:    clamp(1.0625rem, 1.15vw, 1.3125rem);
+  --t-body:       clamp(0.9375rem, 0.95vw, 1.0625rem);
+  --t-body-sm:    0.875rem;
+  --t-micro:      0.625rem;
+
+  --lh-display:   0.88;
+  --lh-display-2: 0.96;
+  --lh-body:      1.62;
+  --lh-tight:     1.2;
+
+  --ls-display:  -0.01em;
+  --ls-micro:     0.18em;
+  --ls-mono:      0.16em;
+  --ls-mono-wide: 0.22em;
+
+  /* ── Motion ─────────────────────────────────────────────────────── */
+  --e-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --e-inout:   cubic-bezier(0.76, 0, 0.24, 1);
+  --d-fast:    0.30s;
+  --d-base:    0.60s;
+  --d-slow:    1.00s;
+  --d-curtain: 1.20s;
+
+  /* ── Spacing ────────────────────────────────────────────────────── */
+  --s-1:  0.25rem;
+  --s-2:  0.5rem;
+  --s-3:  0.75rem;
+  --s-4:  1rem;
+  --s-5:  1.5rem;
+  --s-6:  2rem;
+  --s-7:  3rem;
+  --s-8:  4rem;
+  --s-9:  6rem;
+  --s-10: 8rem;
+  --s-11: 12rem;
+
+  --gutter:      clamp(1.25rem, 4vw, 4rem);
+  --section-y:   clamp(4.5rem, 11vh, 10rem);
+  --max-w:       1560px;
+
+  /* ── Structure ──────────────────────────────────────────────────── */
+  --radius:      0px;
+  --radius-card: 2px;
+  --radius-pill: 999px;
+  --stroke:      1px;
+
+  /* ── Layering ───────────────────────────────────────────────────── */
+  --z-base:      1;
+  --z-sticky:    50;
+  --z-chrome:    100;
+  --z-overlay:   500;
+  --z-curtain:   800;
+  --z-preloader: 900;
+  --z-cursor:    1000;
+}
+
+/* ═══ Dark-ground scope ════════════════════════════════════════════════
+   Wrap any section that sits on --olive / --noir in .on-dark and every
+   ink token flips. Children keep using var(--ink) etc. and stay correct. */
+.on-dark {
+  --ink:       var(--paper-ink);
+  --ink-dim:   var(--paper-dim);
+  --ink-faint: var(--paper-faint);
+  --rule:      var(--rule-dark);
+  color: var(--paper-ink);
+}
+
+/* ═══ Type utilities ═══════════════════════════════════════════════════ */
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-weight: 400;
+  font-size: var(--t-micro);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-micro);
+  color: var(--ink-dim);
+}
+
+.display-xl,
+.display-lg,
+.display-md,
+.display-sm {
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+  margin: 0;
+}
+
+.display-xl { font-size: var(--t-display-xl); font-weight: 900; line-height: var(--lh-display); }
+.display-lg { font-size: var(--t-display-lg); font-weight: 800; line-height: var(--lh-display); }
+.display-md { font-size: var(--t-display-md); font-weight: 700; line-height: var(--lh-display-2); }
+.display-sm { font-size: var(--t-display-sm); font-weight: 700; line-height: var(--lh-display-2); }
+
+.body-lg,
+.body,
+.body-sm {
+  font-family: var(--f-ui);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--ink-dim);
+}
+
+.body-lg { font-size: var(--t-body-lg); }
+.body    { font-size: var(--t-body); }
+.body-sm { font-size: var(--t-body-sm); line-height: 1.55; }
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-mono);
+  color: var(--ink-dim);
+}
+
+.lime { color: var(--lime); }
+
+/* ═══ Rules ════════════════════════════════════════════════════════════ */
+
+.rule,
+.rule-dark {
+  display: block;
+  width: 100%;
+  height: var(--stroke);
+  border: 0;
+  flex: none;
+}
+.rule      { background: var(--rule); }
+.rule-dark { background: var(--rule-dark); }
+
+/* ═══ Layout helpers ═══════════════════════════════════════════════════ */
+
+.shell {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section-pad { padding-block: var(--section-y); }
+
+/* ═══ Lime underline — wipes in from the left on hover ═════════════════
+   transform-only, so it stays on the compositor. */
+.lime-underline {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+}
+.lime-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.14em;
+  height: 2px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--d-base) var(--e-out);
+  pointer-events: none;
+}
+.lime-underline:hover::after,
+.lime-underline:focus-visible::after,
+.lime-underline[data-active='true']::after {
+  transform: scaleX(1);
+}
+
+/* ═══ The one pill — nav CTA. No glow. ════════════════════════════════ */
+.pill-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: 0.6rem 1.35rem;
+  border: var(--stroke) solid var(--lime);
+  border-radius: var(--radius-pill);
+  background: var(--lime);
+  color: var(--olive);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: var(--t-micro);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-mono);
+  white-space: nowrap;
+  box-shadow: none;
+  transition:
+    transform var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out),
+    color var(--d-fast) var(--e-out);
+}
+.pill-cta:hover,
+.pill-cta:focus-visible {
+  transform: translateY(-2px);
+  background: transparent;
+  color: var(--lime);
+}
+.pill-cta:active { transform: translateY(0); }
+
+/* ═══ DEPRECATED ALIASES ═══════════════════════════════════════════════
+   Legacy names still referenced by section stylesheets that have not been
+   rewritten yet. They resolve to the real tokens so nothing renders broken
+   mid-migration. DO NOT USE THESE IN NEW CODE — they will be deleted. */
+:root {
+  --cream:         var(--paper);
+  --cream-dark:    var(--paper-2);
+  --white:         var(--paper);
+  --ink-mid:       var(--ink-dim);
+  --ink-soft:      var(--ink-dim);
+  --ink-low:       var(--ink-faint);
+  --border:        var(--rule);
+  --lime-hover:    var(--lime);
+  --noir-deep:     var(--noir);
+  --noir-soft:     var(--olive);
+  --font-display:  var(--f-display);
+  --font-body:     var(--f-ui);
+  --font-mono:     var(--f-mono);
+}
+
+/* ═══ Reduced motion — neutralise everything ══════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-fast:    0.01ms;
+    --d-base:    0.01ms;
+    --d-slow:    0.01ms;
+    --d-curtain: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .lime-underline::after { transform: scaleX(1); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UI PRIMITIVES — SplitText masks + Marquee track.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split-mask {
+  display: inline-block;
+  overflow: hidden;
+  /* Room for descenders; without it a mask clips g/y/p tails. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  vertical-align: bottom;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.split-space {
+  display: inline-block;
+  white-space: pre;
+}
+
+/* ── Marquee ────────────────────────────────────────────────────────── */
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  /* Feather both ends so items enter and leave instead of popping. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  flex: none;
+  min-width: 100%;
+  will-change: transform;
+  animation: marquee-scroll linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__group {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--s-7);
+  padding-right: var(--s-7);
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee[data-static='true'] .marquee__track {
+  animation: none;
+  will-change: auto;
+}
+
+.marquee[data-static='true'] .marquee__group:last-child {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-char { will-change: auto; }
+  .marquee__track { animation: none; will-change: auto; }
+}

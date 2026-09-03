@@ -3,14 +3,14 @@
   min-height: 100svh;
   background: #F0EDE6;
   color: #0f0f0f;
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: var(--f-ui);
   padding: 36px;
   position: relative;
 }
 
 .contact-back {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
   color: rgba(15,15,15,0.55);
   text-decoration: none;
@@ -26,13 +26,13 @@
 .contact-hd { margin-bottom: 56px; }
 .contact-eyebrow {
   display: block;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
   color: rgba(15,15,15,0.45);
   margin-bottom: 14px;
 }
 .contact-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--f-display);
   font-weight: 900;
   font-size: clamp(2.8rem, 7vw, 5.4rem);
   line-height: 0.92;
@@ -41,7 +41,7 @@
   margin-bottom: 18px;
 }
 .contact-sub {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--f-ui);
   font-size: 0.98rem; line-height: 1.55;
   color: rgba(15,15,15,0.7);
   max-width: 480px;
@@ -56,7 +56,7 @@
 
 .contact-label {
   display: block;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
   color: rgba(15,15,15,0.45);
   margin-bottom: 18px;
@@ -75,7 +75,7 @@
   border-bottom: 1px solid rgba(15,15,15,0.1);
   text-decoration: none;
   color: #0f0f0f;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--f-display);
   font-weight: 700;
   font-size: 1rem;
   transition: padding .25s cubic-bezier(0.16,1,0.3,1), color .2s;
@@ -85,7 +85,7 @@
   color: #2a4a2a;
 }
 .contact-handle {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 10px;
   letter-spacing: 1px;
   color: rgba(15,15,15,0.45);
@@ -100,7 +100,7 @@
   display: flex; flex-direction: column; gap: 6px;
 }
 .contact-field > span {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
   color: rgba(15,15,15,0.55);
 }
@@ -110,7 +110,7 @@
   border: 1px solid rgba(15,15,15,0.12);
   border-radius: 2px;
   padding: 12px 14px;
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--f-ui);
   font-size: 0.95rem;
   color: #0f0f0f;
   outline: none;
@@ -129,10 +129,10 @@
 
 .contact-submit {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: var(--f-ui);
   font-weight: 700;
   font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
-  background: #C8F73E; color: #0f0f0f;
+  background: var(--lime); color: var(--ink);
   padding: 14px 22px;
   border: none; border-radius: 2px;
   cursor: pointer;
@@ -143,7 +143,7 @@
 .contact-submit:hover { background: #a8d420; transform: scale(.98); }
 
 .contact-fineprint {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--f-mono);
   font-size: 10px;
   color: rgba(15,15,15,0.45);
   letter-spacing: 0.5px;

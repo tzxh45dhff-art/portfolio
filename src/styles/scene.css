@@ -93,3 +93,44 @@
   mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RAIL — the pinned opening act.
+
+   Replaces the old `position: fixed` .scene-container plus a detached 400vh
+   spacer. A sticky stage inside a tall rail keeps the scene in normal flow,
+   so `useScroll` can measure it directly and the sections below it follow
+   naturally instead of being overlapped by a fixed layer.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.rail {
+  position: relative;
+  height: 400vh;
+  background: var(--paper);
+}
+
+.rail__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  /* Shows through as the hero scales away from the edges. */
+  background: var(--olive);
+}
+
+/* Static desaturating wash. Cross-faded on opacity so the hero underneath is
+   never re-filtered per frame. */
+.rail__cool {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--olive);
+  mix-blend-mode: saturation;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail { height: auto; }
+  .rail__pin { position: relative; height: 100svh; }
+  .rail__cool { will-change: auto; }
+}

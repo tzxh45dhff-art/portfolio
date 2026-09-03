@@ -4,43 +4,49 @@
 ────────────────────────────────────────────────────────── */
 
 .online-root {
-  --accent:        #B5FF3D;
-  --accent-soft:   rgba(181, 255, 61, 0.55);
-  --accent-faint:  rgba(181, 255, 61, 0.10);
-  --accent-line:   rgba(181, 255, 61, 0.18);
+  /* Remapped onto tokens.css. The page keeps its own local names so the ~1000
+     rules below need no edits, but every value now resolves to the shared
+     design system instead of a private palette.
 
-  --bg:            #0A0B0D;
-  --surface:       #0E1013;
-  --surface-2:     #131619;
-  --surface-3:     #181B1F;
-  --hairline:      rgba(255, 255, 255, 0.06);
-  --hairline-2:    rgba(255, 255, 255, 0.10);
-  --hairline-3:    rgba(255, 255, 255, 0.18);
+     --f-display / --f-mono / --f-body are deliberately NOT redefined here:
+     they inherit Barlow Condensed / Space Mono / Inter from :root. Writing
+     `--f-display: var(--f-display)` would be a self-reference cycle and
+     resolve to guaranteed-invalid. Inheriting is what switches this page's
+     headings off Inter and onto the display face the rest of the site uses. */
 
-  --ink:           #E9ECEF;
-  --ink-mid:       #9AA0A6;
-  --ink-low:       #5C6168;
-  --ink-faint:     #3A3D42;
+  --accent:        var(--lime);
+  --accent-soft:   rgba(210, 255, 0, 0.55);
+  --accent-faint:  rgba(210, 255, 0, 0.10);
+  --accent-line:   rgba(210, 255, 0, 0.18);
 
-  --f-display:     'Inter', system-ui, sans-serif;
-  --f-mono:        'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
-  --f-body:        'Inter', system-ui, sans-serif;
+  --bg:            var(--noir);
+  --surface:       #16171A;
+  --surface-2:     #1B1D20;
+  --surface-3:     #212327;
+  --hairline:      var(--rule-dark);
+  --hairline-2:    rgba(244, 244, 237, 0.10);
+  --hairline-3:    rgba(244, 244, 237, 0.18);
 
-  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-soft:     cubic-bezier(0.4, 0, 0.2, 1);
+  --ink:           var(--paper-ink);
+  --ink-mid:       var(--paper-dim);
+  --ink-low:       var(--paper-faint);
+  --ink-faint:     rgba(244, 244, 237, 0.18);
+
+  --ease-out:      var(--e-out);
+  --ease-soft:     var(--e-inout);
 
   background: var(--bg);
   color: var(--ink);
   font-family: var(--f-body);
   position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
+  min-height: 100svh;
+  overflow-x: clip;
   letter-spacing: -0.005em;
 }
 .online-root *,
 .online-root *::before,
 .online-root *::after { box-sizing: border-box; }
-body:has(.online-root) { background: var(--bg); }
+body:has(.online-root) { background: var(--noir); }
 
 /* ══════════════════════════════════════════════════════════
    GLOBAL CHROME (background, top bar, side rail, status)
@@ -967,7 +973,7 @@ body:has(.online-root) { background: var(--bg); }
   display: inline-flex; align-items: center; gap: 14px;
   padding: 16px 26px;
   background: var(--accent);
-  color: #0A0B0D;
+  color: var(--noir);
   font-family: var(--f-mono);
   font-size: 11.5px; letter-spacing: 0.16em;
   font-weight: 600;

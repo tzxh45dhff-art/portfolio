@@ -1,44 +1,193 @@
-/* ── About Text Section ────────────────────────── */
-.about-section {
+/* ═══════════════════════════════════════════════════════════════════════
+   ABOUT — the statement, and the spec column beside it.
+
+   Olive ground, continuing straight out of the pinned rail above so the two
+   read as one surface rather than two stacked sections.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.about {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background: var(--ink);
-  color: var(--cream);
+  z-index: var(--z-base);
+  background: var(--olive);
+  padding-block: var(--section-y);
+}
+
+.about__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 7vh, 5rem);
+}
+
+.about__head {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 10vw 4vw 18vw;
-  z-index: 10;
+  gap: var(--s-5);
 }
 
-.massive-typography {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(2.5rem, 6vw, 8rem);
-  line-height: 0.9;
-  text-align: center;
+.about__head-rule {
+  flex: 1 1 auto;
+}
+
+.about__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* ── The statement ──────────────────────────────────────────────────── */
+
+.about__statement {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(1.85rem, 4.4vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: var(--ls-display);
   text-transform: uppercase;
-  max-width: 1400px;
-  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
 }
 
-.neon-block-wrap {
+.about__seg {
+  display: inline;
+}
+
+/* Highlighted phrase — lime rule wipes in beneath as it enters. */
+.about__mark {
   position: relative;
   display: inline-block;
-  color: var(--cream);
-  overflow: hidden;
-}
-
-/* Words that should be neon green */
-.neon-word {
   color: var(--lime);
 }
 
-.neon-block-cover {
+.about__mark::after {
+  content: '';
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0.04em;
+  height: 2px;
   background: var(--lime);
-  z-index: 2;
-  transform-origin: right;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: about-underline var(--d-slow) var(--e-out) forwards;
+  animation-timeline: view();
+  animation-range: entry 30% cover 45%;
+}
+
+@keyframes about-underline {
+  to { transform: scaleX(1); }
+}
+
+/* Browsers without scroll-driven animations get the rule already drawn
+   rather than an invisible one that never fires. */
+@supports not (animation-timeline: view()) {
+  .about__mark::after { transform: scaleX(1); }
+}
+
+/* ── Spec column ────────────────────────────────────────────────────── */
+
+.about__spec {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+  padding-top: var(--s-2);
+}
+
+.about__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: var(--s-5);
+  padding-bottom: var(--s-5);
+  border-bottom: var(--stroke) solid var(--rule);
+}
+
+.about__stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.about__stat-value {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* A word rather than a number reads at a smaller size. */
+.about__stat-value[data-word='true'] {
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+  color: var(--lime);
+  align-self: start;
+  padding-top: 0.55em;
+}
+
+.about__stat-key {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono-wide);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.about__skills {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.about__skills-title {
+  margin-bottom: var(--s-1);
+}
+
+.about__skill {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.about__skill-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.about__skill-name {
+  font-family: var(--f-ui);
+  font-weight: 500;
+  font-size: var(--t-body-sm);
+  color: var(--ink);
+}
+
+.about__skill-value {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.about__skill-track {
+  display: block;
+  height: 2px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.about__skill-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--lime);
+  transform-origin: left center;
+}
+
+@media (max-width: 900px) {
+  .about__body { grid-template-columns: minmax(0, 1fr); }
 }

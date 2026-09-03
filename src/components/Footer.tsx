@@ -1,133 +1,114 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import Reveal from './ui/Reveal'
+import Marquee from './ui/Marquee'
 import TransitionLink from './TransitionLink'
-import { personal } from '../data'
+import { personal, marqueeItems } from '../data'
 
-type NavLink =
-  | { label: string; kind: 'route'; href: string }
-  | { label: string; kind: 'hash'; hash: string }
-
-const navLinks: NavLink[] = [
-  { label: 'About', kind: 'hash', hash: 'about' },
-  { label: 'Projects', kind: 'hash', hash: 'projects' },
-  { label: 'Online', kind: 'route', href: '/online' },
-  { label: 'Offline', kind: 'route', href: '/offline' },
-  { label: 'Contact', kind: 'route', href: '/contact' },
-]
-
-const socials = [
-  { label: 'GitHub', href: personal.socials.github },
-  { label: 'LinkedIn', href: personal.socials.linkedin },
-  { label: 'Email', href: `mailto:${personal.email}` },
-]
+const YEAR = new Date().getFullYear()
 
 export default function Footer() {
-  const year = new Date().getFullYear()
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  const scrollToId = (id: string) => {
-    const el = document.getElementById(id)
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  const handleHashClick = (e: React.MouseEvent, hash: string) => {
-    e.preventDefault()
-    if (location.pathname === '/') {
-      scrollToId(hash)
-    } else {
-      navigate('/')
-      // Wait for navigation + paint, then scroll
-      setTimeout(() => scrollToId(hash), 80)
-    }
-  }
-
   return (
-    <footer className="footer">
-      {/* Top CTA */}
-      <div className="footer-cta">
-        <span className="footer-cta-label">GOT A PROJECT IN MIND?</span>
-        <a
-          href={`mailto:${personal.email}`}
-          className="footer-cta-email"
-        >
-          {personal.email}
-        </a>
-        <div className="footer-cta-tagline">
-          Currently available for internships &amp; freelance work.
-        </div>
-      </div>
+    <footer className="foot on-dark" data-nav-theme="dark">
+      <div className="shell foot__inner">
+        <Reveal className="foot__lead" y={22}>
+          <span className="eyebrow">04 — Open line</span>
+          <h2 className="foot__title">
+            Let&rsquo;s build
+            <span className="foot__title-dim">something worth shipping.</span>
+          </h2>
+        </Reveal>
 
-      {/* Divider */}
-      <div className="footer-rule" />
-
-      {/* Mid grid */}
-      <div className="footer-mid">
-        {/* Brand */}
-        <div className="footer-brand">
-          <div className="footer-monogram">JS</div>
-          <div className="footer-name">{personal.name}</div>
-          <div className="footer-title">{personal.subtitle}</div>
-          <div className="footer-uni">{personal.degree} · {personal.university}</div>
-        </div>
-
-        {/* Nav */}
-        <div className="footer-col">
-          <span className="footer-col-label">Navigate</span>
-          <nav className="footer-nav">
-            {navLinks.map(l =>
-              l.kind === 'route' ? (
-                <TransitionLink key={l.label} to={l.href} className="footer-nav-link">{l.label}</TransitionLink>
-              ) : (
-                <a
-                  key={l.label}
-                  href={`/#${l.hash}`}
-                  onClick={(e) => handleHashClick(e, l.hash)}
-                  className="footer-nav-link"
-                >
-                  {l.label}
-                </a>
-              )
-            )}
-          </nav>
-        </div>
-
-        {/* Contact */}
-        <div className="footer-col">
-          <span className="footer-col-label">Connect</span>
-          <div className="footer-nav">
-            {socials.map(s => (
-              <a
-                key={s.label}
-                href={s.href}
-                className="footer-nav-link"
-                target={s.href.startsWith('http') ? '_blank' : undefined}
-                rel="noopener noreferrer"
-              >
-                {s.label} ↗
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* Status */}
-        <div className="footer-col">
-          <span className="footer-col-label">Status</span>
-          <div className="footer-status-dot">
-            <span className="footer-dot" />
-            <span className="footer-status-text">Available for work</span>
-          </div>
-          <div className="footer-location">{personal.location}</div>
-          <a href={personal.resumeUrl} className="footer-resume-btn" download>
-            Download CV
+        <Reveal className="foot__mail" delay={0.06} y={18}>
+          <a className="foot__mail-link lime-underline" href={`mailto:${personal.email}`}>
+            {personal.email}
           </a>
+        </Reveal>
+
+        <div className="foot__cols">
+          <Reveal className="foot__col" y={14}>
+            <span className="eyebrow">Elsewhere</span>
+            <ul className="foot__links">
+              <li>
+                <a
+                  className="foot__link lime-underline"
+                  href={personal.socials.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  className="foot__link lime-underline"
+                  href={personal.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a className="foot__link lime-underline" href={personal.resumeUrl}>
+                  Résumé
+                </a>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal className="foot__col" delay={0.05} y={14}>
+            <span className="eyebrow">Navigate</span>
+            <ul className="foot__links">
+              <li>
+                <TransitionLink to="/online" className="foot__link lime-underline">
+                  Online
+                </TransitionLink>
+              </li>
+              <li>
+                <TransitionLink to="/offline" className="foot__link lime-underline">
+                  Offline
+                </TransitionLink>
+              </li>
+              <li>
+                <TransitionLink to="/contact" className="foot__link lime-underline">
+                  Contact
+                </TransitionLink>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal className="foot__col foot__col--meta" delay={0.1} y={14}>
+            <span className="eyebrow">On record</span>
+            <dl className="foot__meta">
+              <div>
+                <dt>Based in</dt>
+                <dd>{personal.location}</dd>
+              </div>
+              <div>
+                <dt>Studying</dt>
+                <dd>{personal.degree}</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd className="foot__status">Open to internships</dd>
+              </div>
+            </dl>
+          </Reveal>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="footer-rule" />
-      <div className="footer-bottom">
-        <span className="footer-copy">© {year} {personal.name}. All rights reserved.</span>
-        <span className="footer-built">Built with React + Framer Motion</span>
+      <Marquee className="foot__marquee" duration={38}>
+        {marqueeItems.map((item) => (
+          <span className="foot__marquee-item" key={item}>
+            {item}
+          </span>
+        ))}
+      </Marquee>
+
+      <div className="shell foot__rail">
+        <span className="mono">
+          &copy; {YEAR} {personal.name}
+        </span>
+        <span className="mono">{personal.buildingSince}</span>
       </div>
     </footer>
   )

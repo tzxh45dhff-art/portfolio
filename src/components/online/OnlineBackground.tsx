@@ -33,23 +33,40 @@ export default function OnlineBackground() {
   }, [])
 
   useEffect(() => {
-    const onScroll = () => {
+    /* The section list is queried ONCE. The previous version ran
+       querySelectorAll on every scroll event and then read
+       getBoundingClientRect() per section — a forced layout every frame — and
+       called setActive() unconditionally, re-rendering on every scroll tick
+       even when the active section had not changed. */
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-on-section]'))
+    let ticking = false
+
+    const update = () => {
+      ticking = false
       const max = Math.max(1, document.body.scrollHeight - window.innerHeight)
       const p = Math.min(1, window.scrollY / max)
+      /* Direct style write, no React involved. */
       if (fillRef.current) fillRef.current.style.transform = `scaleY(${p})`
 
-      const sections = document.querySelectorAll<HTMLElement>('[data-on-section]')
+      const mark = window.innerHeight * 0.45
       let idx = 0
-      sections.forEach((sec) => {
-        const top = sec.getBoundingClientRect().top
-        if (top < window.innerHeight * 0.45) {
+      for (const sec of sections) {
+        if (sec.getBoundingClientRect().top < mark) {
           idx = parseInt(sec.dataset.onSection || '0', 10)
         }
-      })
-      setActive(idx)
+      }
+      /* Only re-render when the value actually changes. */
+      setActive((prev) => (prev === idx ? prev : idx))
     }
+
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(update)
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
+    update()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
